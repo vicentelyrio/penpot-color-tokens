@@ -1,0 +1,22 @@
+{
+  "name": "penpot",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite-live-preview",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@penpot/plugin-styles": "^1.2.0",
+    "@penpot/plugin-types": "^1.2.0",
+    "preact": "^10.26.4"
+  },
+  "devDependencies": {
+    "@preact/preset-vite": "^2.10.1",
+    "typescript": "~5.7.2",
+    "vite": "^6.3.1",
+    "vite-live-preview": "^0.3.2"
+  }
+}

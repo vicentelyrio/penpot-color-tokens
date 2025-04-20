@@ -5,22 +5,22 @@ export type ActionsProps = {
   tints: boolean
   shades: boolean
   steps: number
-  palettes: number
   setTints: (tints: boolean) => void
   setShades: (shades: boolean) => void
   setSteps: (steps: number) => void
-  setPalettes: (palettes: number) => void
+  onAddPalette: () => void
+  onSavePalettes: () => void
 }
 
 export function Actions({
   tints,
   shades,
   steps,
-  palettes,
   setTints,
   setShades,
   setSteps,
-  setPalettes,
+  onAddPalette,
+  onSavePalettes,
 }: ActionsProps) {
   return (
     <div className={classes.actions}>
@@ -58,13 +58,13 @@ export function Actions({
       <button
         className={classes.add}
         data-appearance="secondary"
-        onClick={() => setPalettes(palettes + 1)}>
+        onClick={onAddPalette}>
         Add color
       </button>
       <button
         className={classes.add}
         data-appearance="primary"
-        onClick={() => setPalettes(palettes + 1)}>
+        onClick={onSavePalettes}>
         Generate palette
       </button>
     </div>

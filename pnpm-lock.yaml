@@ -20,6 +20,9 @@ importers:
       preact:
         specifier: ^10.26.4
         version: 10.26.5
+      react-fast-compare:
+        specifier: ^3.2.2
+        version: 3.2.2
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.1
@@ -625,6 +628,9 @@ packages:
 
   preact@10.26.5:
     resolution: {integrity: sha512-fmpDkgfGU6JYux9teDWLhj9mKN55tyepwYbxHgQuIxbWQzgFg5vk7Mrrtfx7xRxq798ynkY4DDDxZr235Kk+4w==}
+
+  react-fast-compare@3.2.2:
+    resolution: {integrity: sha512-nsO+KSNgo1SbJqJEYRE9ERzo7YtYbou/OqjSQKxV7jcKox7+usiUVZOAC+XnDOABXggQTno0Y1CpVnuWEc1boQ==}
 
   rollup@4.40.0:
     resolution: {integrity: sha512-Noe455xmA96nnqH5piFtLobsGbCij7Tu+tb3c1vYjNbTkfzGqXqQXG3wJaYXkRZuQ0vEYN4bhwg7QnIrqB5B+w==}
@@ -1243,6 +1249,8 @@ snapshots:
       source-map-js: 1.2.1
 
   preact@10.26.5: {}
+
+  react-fast-compare@3.2.2: {}
 
   rollup@4.40.0:
     dependencies:

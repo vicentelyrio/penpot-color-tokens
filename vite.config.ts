@@ -1,12 +1,24 @@
 import { defineConfig } from 'vite'
+import { fileURLToPath } from 'url'
 import preact from '@preact/preset-vite'
 import livePreview from 'vite-live-preview'
+
+const pathResolver = (path: string) => (
+  fileURLToPath(new URL(`./src/${path}`, import.meta.url))
+)
 
 export default defineConfig({
   plugins: [
     preact(),
     livePreview({ reload: true }),
   ],
+  resolve: {
+    alias: [
+      { find: '@assets', replacement: pathResolver('assets') },
+      { find: '@components', replacement: pathResolver('components') },
+      { find: '@utils', replacement: pathResolver('utils') },
+    ],
+  },
   build: {
     rollupOptions: {
       input: {

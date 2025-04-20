@@ -1,0 +1,65 @@
+.colors {
+  max-width: 100%;
+  display: flex;
+  flex-flow: row;
+  gap: var(--spacing-8);
+  align-items: center;
+}
+
+.colorsSegment {
+  display: flex;
+  flex-flow: row;
+  gap: var(--spacing-8);
+  align-items: center;
+}
+
+.colorRow {
+  background: var(--background-tertiary);
+  border-radius: var(--spacing-12);
+  display: flex;
+  flex-flow: row;
+  flex: 1 1 auto;
+  gap: var(--spacing-12);
+  align-items: center;
+  padding: var(--spacing-12);
+  margin: var(--spacing-40) 0;
+}
+
+input[type="color" i] {
+  border: var(--background-secondary) var(--spacing-4) solid;
+  border-radius: 50%;
+  inline-size: 30px;
+  block-size: 30px;
+  padding: 1px;
+}
+
+input[type="color" i]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+input[type="color" i]::-webkit-color-swatch {
+  border-radius: 50%;
+}
+
+input[type="color" i]::-moz-color-swatch {
+  border-radius: 50%;
+}
+
+.name {
+  border-color: var(--background-primary);
+}
+
+.tints {
+  flex-direction: row-reverse;
+}
+
+.color {
+  border: 2px solid var(--background-secondary);
+  border-radius: var(--spacing-4);
+  width: var(--spacing-24);
+  height: var(--spacing-24);
+}
+
+.current {
+  border-color: var(--accent-tertiary);
+}

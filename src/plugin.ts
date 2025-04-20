@@ -11,7 +11,7 @@ penpot.on('themechange', (theme) => {
 })
 
 // Handle messages from UI
-penpot.on('message', (message) => {
+penpot.ui.onMessage((message) => {
   console.log('Message received from UI:', message)
   // Add your message handling logic here
 })

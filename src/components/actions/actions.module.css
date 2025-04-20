@@ -1,0 +1,21 @@
+.actions {
+  background: var(--background-secondary);
+  border-radius: var(--spacing-12);
+  display: flex;
+  flex-flow: row;
+  gap: var(--spacing-40);
+  align-items: center;
+  padding: var(--spacing-4) var(--spacing-16);
+  margin: var(--spacing-16) 0;
+}
+
+.steps {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  gap: var(--spacing-8);
+}
+
+.stepsInput {
+  width: calc(var(--spacing-40) * 2);
+}

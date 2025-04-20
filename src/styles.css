@@ -1,0 +1,15 @@
+@import "@penpot/plugin-styles/styles.css";
+
+body {
+  background-color: var(--background-primary);
+  overflow: hidden;
+  color: var(--text-color);
+}
+
+#app {
+  min-width: 600px;
+  width: 100%;
+  height: 100lvh;
+  padding: var(--spacing-24);
+  overflow: auto;
+}

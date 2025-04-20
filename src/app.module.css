@@ -1,0 +1,7 @@
+.container {
+}
+
+.title {
+  border-bottom: 1px solid var(--db-quaternary);
+  padding-bottom: var(--spacing-12);
+}

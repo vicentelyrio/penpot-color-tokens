@@ -1,5 +1,3 @@
-import { useState } from 'preact/hooks'
-import { clsx } from '@utils/clsx'
 import { Color } from './color'
 import classes from './colors.module.css'
 
@@ -7,11 +5,10 @@ export type ColorsProps = {
   steps: number
   tints: boolean
   shades: boolean
+  palettes: number
 }
 
-export function Colors({ steps, tints, shades }: ColorsProps) {
-  const [palettes, setPalettes] = useState(1)
-
+export function Colors({ steps, tints, shades, palettes }: ColorsProps) {
   return (
     <div className={classes.colors}>
       {Array.from(Array(palettes).keys()).map((i) => (
@@ -22,12 +19,6 @@ export function Colors({ steps, tints, shades }: ColorsProps) {
           shades={shades}
         />
       ))}
-      <button
-        className={classes.add}
-        data-appearance="primary"
-        onClick={() => setPalettes(palettes + 1)}>
-        +
-      </button>
     </div>
   )
 }

@@ -27,17 +27,6 @@
   align-items: center;
 }
 
-.add {
-  border-radius: 50%;
-  width: var(--spacing-32);
-  height: var(--spacing-32);
-  font-size: 24px;
-  font-weight: 900;
-  align-self: flex-start;
-  padding: 0;
-  margin: 0 var(--spacing-12);
-}
-
 .colorLabel {
   width: 70px;
 }

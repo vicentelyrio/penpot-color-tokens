@@ -1,20 +1,64 @@
-// Initialize the plugin UI
 penpot.ui.open('Palette generator', `./index.html?theme=${penpot.theme}`)
 
-// Listen for theme changes
 penpot.on('themechange', (theme) => {
-  // Send theme changes to the UI
   penpot.ui.sendMessage({
     type: 'theme',
     content: theme
   })
 })
 
-// Handle messages from UI
-penpot.ui.onMessage((message) => {
+function addColorToPenpot(colorName: string, colorValue: string) {
+  try {
+    const localLibrary = penpot.library.local
+    const newColor = localLibrary.createColor()
+
+    newColor.name = colorName
+    newColor.color = colorValue
+    newColor.opacity = 1
+
+    return { success: true, colorId: newColor.id }
+  } catch (error: unknown) {
+    return { success: false, error: (error as Error)?.message }
+  }
+}
+
+type Message = {
+  type: string
+  name: string
+  color: string
+  colors: Array<{ name: string; value: string; }>
+}
+
+penpot.ui.onMessage((message: Message) => {
   console.log('Message received from UI:', message)
-  // Add your message handling logic here
+
+  if (message.type === 'addColor') {
+    const result = addColorToPenpot(message.name, message.color)
+    penpot.ui.sendMessage({
+      type: 'colorAdded',
+      success: result.success,
+      colorId: result.colorId,
+      error: result.error
+    })
+  } else if (message.type === 'addColorPalette') {
+    const results = []
+
+    for (const color of message.colors) {
+      const result = addColorToPenpot(color.name, color.value)
+
+      results.push({
+        name: color.name,
+        success: result.success,
+        colorId: result.colorId,
+        error: result.error
+      })
+    }
+
+    penpot.ui.sendMessage({
+      type: 'paletteAdded',
+      results
+    })
+  }
 })
 
-// Make sure to export the plugin functions so Penpot can find them
 export {}

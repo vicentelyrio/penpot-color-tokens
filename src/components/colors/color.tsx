@@ -1,8 +1,6 @@
-import { useMemo, useState } from 'preact/hooks'
-
+import { useState } from 'preact/hooks'
 import { clsx } from '@utils/clsx'
-import { shade, tint } from '@utils/colors'
-
+import { useColors } from './useColors'
 import classes from './colors.module.css'
 
 const DEFAULT_COLOR = '#666666'
@@ -18,7 +16,7 @@ export function Color({ steps, tints, shades }: ColorProps) {
   const [color, setColor] = useState(DEFAULT_COLOR)
   const [name, setName] = useState(DEFAULT_COLOR_NAME)
 
-  const colors = useColors({ color, steps, tints, shades })
+  const { colors } = useColors({ color, steps, tints, shades })
 
   return (
     <div className={classes.colorRow}>
@@ -28,19 +26,19 @@ export function Color({ steps, tints, shades }: ColorProps) {
         value={color}
         onChange={(e) => setColor(e.currentTarget.value)}
       />
-      <p className="code-font">{color}</p>
+      <p className={clsx(['code-font', classes.colorLabel])}>{color}</p>
       <input
         className={clsx(['input', classes.name])}
         type="text"
         value={name}
         onChange={(e) => setName(e.currentTarget.value)}
       />
-
-      <div className={clsx([classes.colorsSegment, classes.shades])}>
+      <div className={classes.colorsSegment}>
         {colors && colors.map((colorStep) => (
           <div
             className={clsx([classes.color, colorStep === color ? classes.current : ''])}
             style={{ background: colorStep }}
+            title={colorStep}
           />
         ))}
       </div>
@@ -48,23 +46,3 @@ export function Color({ steps, tints, shades }: ColorProps) {
   )
 }
 
-type UseColorsProps = {
-  color: string
-  steps: number
-  tints: boolean
-  shades: boolean
-}
-
-function useColors({ color, steps, tints, shades }: UseColorsProps) {
-  const stepsArray = useMemo(() => Array.from(Array(steps).keys()), [steps])
-
-  const tintsArray = useMemo(() => (
-    tints ? stepsArray.map((i) => tint(color, i, steps)).reverse() : []
-  ), [steps, color, tints])
-
-  const shadesArray = useMemo(() => (
-    shades ? stepsArray.map((i) => shade(color, i, steps)) : []
-  ), [steps, color, shades])
-
-  return [...tintsArray, color, ...shadesArray]
-}

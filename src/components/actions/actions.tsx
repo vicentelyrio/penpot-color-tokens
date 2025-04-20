@@ -24,7 +24,7 @@ export function Actions({
 }: ActionsProps) {
   return (
     <div className={classes.actions}>
-      <div class="checkbox-container">
+      <div class={clsx(['checkbox-container', classes.field])}>
         <input
           className="checkbox-input"
           type="checkbox"

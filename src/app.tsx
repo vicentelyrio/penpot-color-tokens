@@ -1,10 +1,7 @@
 import { useState } from 'preact/hooks'
 
-import { clsx } from '@utils/clsx'
 import { Actions } from '@components/actions/actions'
 import { Colors } from '@components/colors/colors'
-
-import classes from './app.module.css'
 
 const DEFAULT_STEPS = 8
 
@@ -15,11 +12,7 @@ export function App() {
   const [palettes, setPalettes] = useState(1)
 
   return (
-    <div className={classes.container}>
-      <h3 className={clsx(['title-m', classes.title])}>
-        Color Palette Generator
-      </h3>
-
+    <div>
       <Actions
         tints={tints}
         shades={shades}

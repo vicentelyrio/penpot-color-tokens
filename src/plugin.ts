@@ -1,4 +1,7 @@
-penpot.ui.open('Palette generator', `./index.html?theme=${penpot.theme}`)
+penpot.ui.open('Color Palette Generator', `./index.html?theme=${penpot.theme}`, {
+  width: 760,
+  height: 600,
+})
 
 penpot.on('themechange', (theme) => {
   penpot.ui.sendMessage({
@@ -40,7 +43,9 @@ penpot.ui.onMessage((message: Message) => {
       colorId: result.colorId,
       error: result.error
     })
-  } else if (message.type === 'addColorPalette') {
+  }
+
+  if (message.type === 'addColorPalette') {
     const results = []
 
     for (const color of message.colors) {

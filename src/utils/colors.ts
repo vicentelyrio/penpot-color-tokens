@@ -12,9 +12,9 @@ export function shade(color: string, step: number, total: number) {
   const { red, green, blue } = rgbaColor.toObject()
 
   const percentage = (step + 1) / (total + 1)
-  const newRed = Math.max(0, Math.floor(red * (1 - percentage)))
-  const newGreen = Math.max(0, Math.floor(green * (1 - percentage)))
-  const newBlue = Math.max(0, Math.floor(blue * (1 - percentage)))
+  const newRed = Math.max(0, Math.round(red * (1 - percentage)))
+  const newGreen = Math.max(0, Math.round(green * (1 - percentage)))
+  const newBlue = Math.max(0, Math.round(blue * (1 - percentage)))
 
   const r = newRed.toString(16).padStart(2, '0')
   const g = newGreen.toString(16).padStart(2, '0')

@@ -1,5 +1,5 @@
 {
-  "name": "Color Palette Generator",
+  "name": "Penpot Color Tokens",
   "code": "./plugin.js",
   "description": "This is a starter plugin for Penpot",
   "permissions": ["content:read", "content:write"]

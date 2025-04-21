@@ -1,4 +1,4 @@
-penpot.ui.open('Color Palette Generator', `./index.html?theme=${penpot.theme}`, {
+penpot.ui.open('Penpot Color Tokens', `./index.html?theme=${penpot.theme}`, {
   width: 760,
   height: 600,
 })

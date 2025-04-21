@@ -18,10 +18,11 @@ export default defineConfig({
     alias: {
       '@': resolve(__dirname, './src'),
       '@utils': resolve(__dirname, './src/utils'),
+      '@consts': resolve(__dirname, './src/consts'),
       '@components': resolve(__dirname, './src/components'),
       '@hooks': resolve(__dirname, './src/hooks'),
       '@penpot/plugin-styles': resolve(__dirname, './src/test/mocks/pluginStyles.ts'),
       '@penpot/plugin-types': resolve(__dirname, './src/test/mocks/pluginTypes.ts')
     }
   }
-}) 
+})

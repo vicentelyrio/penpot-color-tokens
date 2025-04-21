@@ -1,84 +1,69 @@
 # Penpot Color Tokens
 
-A Penpot plugin that allows you to generate color palettes and add them to your Penpot designs.
+A plugin for Penpot that generates color palettes from W3C design tokens format.
 
 ## Features
 
-- Generate tints and shades from a base color
-- Customize the number of color steps in your palette
+- Creates color swatches from W3C design tokens
+- Adds colors to the Penpot library
+- Generates visual color palette with:
+  - Color swatches
+  - Color names
+  - Hex values
+  - Automatically adjusts text color for readability
 
 ## Usage
 
-1. Open your Penpot project
-2. Navigate to the plugins section
-3. Load the **Penpot Color Tokens** plugin
-4. Select a base color and adjust the tint/shade settings
-5. Generate your palette and add it to your Penpot library
+1. Install the plugin in your Penpot workspace
+2. Prepare your color tokens in W3C design tokens format:
 
-## Development
-
-### Installation
-
-1. Clone this repository
-2. Install dependencies:
-   ```
-   pnpm install
-   ```
-3. Start the development server:
-   ```
-   pnpm dev
-   ```
-
-#### Prerequisites
-
-- [Node.js](https://nodejs.org/) (v16 or later)
-- [pnpm](https://pnpm.io/)
-- [Penpot](https://penpot.app/)
-
-#### Project Structure
-
-- `src/` - Source code
-  - `components/` - React components
-  - `hooks/` - Custom React hooks
-  - `utils/` - Utility functions
-  - `plugin.ts` - Main plugin integration with Penpot
-  - `test/` - Test setup and utilities
-
-#### Available Scripts
-
-- `pnpm dev` - Start the development server
-- `pnpm build` - Build the plugin for production
-- `pnpm preview` - Preview the built plugin
-- `pnpm test` - Run tests
-- `pnpm test:watch` - Run tests in watch mode
-- `pnpm test:coverage` - Run tests with coverage report
-
-## Testing
-
-The project uses Vitest and Testing Library for tests. Here's how to run them:
-
-```bash
-# Run tests once
-pnpm test
-
-# Run tests in watch mode (during development)
-pnpm test:watch
-
-# Run tests with coverage report
-pnpm test:coverage
+```json
+{
+  "color": {
+    "primary": { "value": "#0066CC", "type": "color" },
+    "secondary": { "value": "#FF6347", "type": "color" },
+    "accent": { "value": "#FFD700", "type": "color" }
+  }
+}
 ```
 
-Tests are organized alongside the code they're testing, following a `.test.ts` or `.test.tsx` naming convention.
+3. Call the `onSavePalettes` function with your tokens
+4. The plugin will create a grid of color swatches and add the colors to your library
 
-## Technologies
+## API Integration
 
-- [Preact](https://preactjs.com/) - A lightweight alternative to React
-- [TypeScript](https://www.typescriptlang.org/) - For type safety
-- [Vite](https://vitejs.dev/) - For fast development and building
-- [Penpot Plugin API](https://help.penpot.app/technical-guide/plugins/) - For integration with Penpot
-- [Vitest](https://vitest.dev/) - For testing
-- [Testing Library](https://testing-library.com/docs/preact-testing-library/intro/) - For component testing
+The plugin uses the following Penpot API functions:
+
+- `createRectangle` - Creates the color swatch rectangles
+- `createText` - Creates text elements for color names and hex values
+- `addLibraryColor` - Adds colors to the Penpot library
+- `addToCurrentPage` - Adds elements to the current page
+- `centerInViewport` - Centers the generated palette in the viewport
+
+## Customization
+
+You can customize the plugin by modifying:
+
+- `swatchSize` - Size of each color swatch
+- `padding` - Padding around the palette
+- `gap` - Space between swatches
+- `columns` - Number of columns in the grid
+
+## Example
+
+```javascript
+// Example usage
+const tokens = {
+  "color": {
+    "primary": { "value": "#0066CC", "type": "color" },
+    "secondary": { "value": "#FF6347", "type": "color" },
+    "accent": { "value": "#FFD700", "type": "color" }
+  }
+};
+
+onSavePalettes(tokens);
+```
 
 ## License
 
-See the [LICENSE](LICENSE) file for details.
+MIT

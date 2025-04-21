@@ -1,6 +1,15 @@
 {
   "name": "Penpot Color Tokens",
   "code": "./plugin.js",
-  "description": "This is a starter plugin for Penpot",
-  "permissions": ["content:read", "content:write"]
+  "description": "Generate color palettes with a opinionated format",
+  "permissions": [
+    "content:read",
+    "content:write",
+    "library:read",
+    "library:write",
+    "user:read",
+    "comment:read",
+    "comment:write",
+    "allow:downloads"
+  ]
 }

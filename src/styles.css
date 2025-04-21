@@ -13,3 +13,20 @@ body {
   overflow: auto;
   padding: var(--spacing-16);
 }
+
+.success {
+  color: #4caf50;
+}
+
+.warning {
+  color: #ff9800;
+}
+
+.error {
+  color: #f44336;
+}
+
+.generation-stats {
+  margin-top: var(--spacing-8);
+  font-size: var(--font-size-14);
+}

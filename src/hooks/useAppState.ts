@@ -2,6 +2,8 @@ import isEqual from 'react-fast-compare'
 import { useEffect, useState } from 'preact/hooks'
 
 import { buildPalette } from '@utils/buildPalette'
+import { parseColors } from '@utils/parseColors'
+import { MESSAGES } from '@consts/messages'
 
 const DEFAULT_STEPS = 8
 const DEFAULT_PALETTE_COLOR = '#666666'
@@ -23,6 +25,8 @@ export function useAppState() {
   const [tints, setTints] = useState(true)
   const [shades, setShades] = useState(true)
   const [palettes, setPalettes] = useState<Palette[]>([defaultPalette])
+  const [isGenerating, setIsGenerating] = useState(false)
+  const [generationResult, setGenerationResult] = useState<null | GenerationResult>(null)
 
   useEffect(() => {
     const newPalettes = palettes.map((palette) => ({
@@ -39,6 +43,39 @@ export function useAppState() {
       setPalettes(newPalettes)
     }
   }, [steps, tints, shades, palettes])
+
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      const message = event.data
+
+      if (message.type === 'palettesGenerated') {
+        setIsGenerating(false)
+
+        let stats
+
+        if (message.results && Array.isArray(message.results)) {
+          const created = message.results.filter((result: ResultItem) => result.success && !result.skipped).length
+          const skipped = message.results.filter((result: ResultItem) => result.success && result.skipped).length
+          const failed = message.results.filter((result: ResultItem) => !result.success).length
+
+          stats = { created, skipped, failed }
+        }
+
+        setGenerationResult({
+          success: message.success,
+          message: message.message,
+          stats,
+          results: message.results
+        })
+      }
+    }
+
+    window.addEventListener('message', handleMessage)
+
+    return () => {
+      window.removeEventListener('message', handleMessage)
+    }
+  }, [])
 
   function onAddPalette() {
     setPalettes([...palettes, defaultPalette])
@@ -69,46 +106,13 @@ export function useAppState() {
   }
 
   function onSavePalettes() {
-    const newPalettes = palettes.reduce<Record<string, ColorToken>>((acc, palette) => {
-      const baseColorIndex = palette.colors.findIndex(c => c === palette.color)
-      let paletteObj: Record<string, ColorToken> = {}
+    setIsGenerating(true)
+    setGenerationResult(null)
 
-      palette.colors.forEach((color, i) => {
-        if (tints && shades) {
-          if (i <= baseColorIndex) {
-            const step = (i + 1) * 100
-            const key = `${palette.name}-pale-${step}`
-            paletteObj[key] = {
-              $type: 'color',
-              $value: color
-            }
-          }
-
-          if (i >= baseColorIndex) {
-            const step = (i - baseColorIndex + 1) * 100
-            const key = `${palette.name}-shade-${step}`
-            paletteObj[key] = {
-              $type: 'color',
-              $value: color
-            }
-          }
-        } else {
-          const step = (i + 1) * 100
-          const key = `${palette.name}-${step}`
-          paletteObj[key] = {
-            $type: 'color',
-            $value: color
-          }
-        }
-      })
-
-      return {
-        ...acc,
-        ...paletteObj
-      }
-    }, {})
-
-    console.log(newPalettes)
+    parent.postMessage({
+      type: MESSAGES.SAVE_PALETTES,
+      tokens: parseColors(palettes, tints, shades)
+    }, '*')
   }
 
   return {
@@ -116,6 +120,8 @@ export function useAppState() {
     tints,
     shades,
     palettes,
+    isGenerating,
+    generationResult,
     onAddPalette,
     onRemovePalette,
     onSetPalette,

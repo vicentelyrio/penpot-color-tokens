@@ -4,15 +4,10 @@ import classes from './colors.module.css'
 export type ColorsProps = {
   palettes: Palette[]
   onSetPalette: (color: string, name: string, index: number) => void
+  onRemovePalette: (index: number) => void
 }
 
-export type ColorProps = {
-  palette: Palette
-  onSetPalette: (color: string, name: string, index: number) => void
-  index: number
-}
-
-export function Colors({ palettes, onSetPalette }: ColorsProps) {
+export function Colors({ palettes, onSetPalette, onRemovePalette }: ColorsProps) {
   return (
     <div className={classes.colors}>
       {palettes.map((palette, i) => (
@@ -20,6 +15,7 @@ export function Colors({ palettes, onSetPalette }: ColorsProps) {
           key={i}
           palette={palette}
           onSetPalette={onSetPalette}
+          onRemovePalette={onRemovePalette}
           index={i}
         />
       ))}
@@ -27,7 +23,19 @@ export function Colors({ palettes, onSetPalette }: ColorsProps) {
   )
 }
 
-export function Color({ palette, onSetPalette, index }: ColorProps) {
+export type ColorProps = {
+  palette: Palette
+  onSetPalette: (color: string, name: string, index: number) => void
+  onRemovePalette: (index: number) => void
+  index: number
+}
+
+export function Color({
+  index,
+  palette,
+  onSetPalette,
+  onRemovePalette,
+}: ColorProps) {
   return (
     <div className={classes.colorRow}>
       <input
@@ -52,6 +60,26 @@ export function Color({ palette, onSetPalette, index }: ColorProps) {
           />
         ))}
       </div>
+      {index > 0 && (
+        <button
+          className={classes.removeButton}
+          data-appearance="secondary"
+          onClick={() => onRemovePalette(index)}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      )}
     </div>
   )
 }

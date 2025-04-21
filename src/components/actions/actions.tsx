@@ -59,13 +59,13 @@ export function Actions({
         className={classes.add}
         data-appearance="secondary"
         onClick={onAddPalette}>
-        Add color
+        Add
       </button>
       <button
         className={classes.add}
         data-appearance="primary"
         onClick={onSavePalettes}>
-        Generate palette
+        Generate
       </button>
     </div>
   )

@@ -14,8 +14,8 @@ export default defineConfig({
   ],
   resolve: {
     alias: [
-      { find: '@assets', replacement: pathResolver('assets') },
       { find: '@components', replacement: pathResolver('components') },
+      { find: '@hooks', replacement: pathResolver('hooks') },
       { find: '@utils', replacement: pathResolver('utils') },
     ],
   },

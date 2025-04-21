@@ -5,6 +5,7 @@
   align-items: flex-start;
   gap: var(--spacing-8);
   margin: var(--spacing-32) 0;
+  padding-right: var(--spacing-16);
 }
 
 .colorRow {
@@ -17,6 +18,7 @@
   gap: var(--spacing-12);
   align-items: center;
   padding: var(--spacing-12);
+  position: relative;
 }
 
 .colorsSegment {
@@ -64,4 +66,21 @@ input[type="color"]::-moz-color-swatch {
 
 .current {
   border-color: var(--accent-tertiary);
+}
+
+.removeButton {
+  border-radius: 50%;
+  width: var(--spacing-40);
+  height: var(--spacing-40);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--background-secondary);
+  border: var(--background-tertiary) var(--spacing-4) solid;
+  cursor: pointer;
+  position: absolute;
+  top: var(--spacing-8);
+  right: calc(var(--spacing-12) * -1);
+  padding: 0;
+  margin: auto;
 }

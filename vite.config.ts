@@ -18,6 +18,7 @@ const baseConfig = {
       { find: '@consts', replacement: pathResolver('consts') },
       { find: '@components', replacement: pathResolver('components') },
       { find: '@hooks', replacement: pathResolver('hooks') },
+      { find: '@plugin', replacement: pathResolver('plugin') },
       { find: '@utils', replacement: pathResolver('utils') },
     ],
   },

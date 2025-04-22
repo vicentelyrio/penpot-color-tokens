@@ -1,5 +1,5 @@
-import { addColorToLibrary, getLocalLibrary } from '@utils/libraryService'
-import { generateColorPalette } from '@utils/colorPalette'
+import { addColorToLibrary, getLocalLibrary } from '@plugin/libraryService'
+import { generateColorPalette } from '@plugin/colorPalette'
 import { MESSAGES } from '@consts/messages'
 
 export function handleAddColorMessage(message: Message): void {

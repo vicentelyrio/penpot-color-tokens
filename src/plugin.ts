@@ -3,7 +3,7 @@ import {
   handleAddColorMessage,
   handleAddColorPaletteMessage,
   handleSavePalettesMessage,
-} from '@utils/messages'
+} from '@plugin/messages'
 
 penpot.ui.open('Penpot Color Tokens', `./index.html?theme=${penpot.theme}`, {
   width: 760,
@@ -17,7 +17,6 @@ penpot.on('themechange', (theme) => {
   })
 })
 
-// Handle UI messages
 penpot.ui.onMessage((message: Message) => {
   switch (message.type) {
     case MESSAGES.ADD_COLOR:

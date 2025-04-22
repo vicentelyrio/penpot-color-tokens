@@ -1,4 +1,4 @@
-import { getLocalLibrary, addColorToLibrary } from '@utils/libraryService'
+import { getLocalLibrary, addColorToLibrary } from '@plugin/libraryService'
 import { LIBRARY_NAME } from '@consts/config'
 
 export async function generateColorPalette(

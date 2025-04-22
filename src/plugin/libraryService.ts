@@ -1,9 +1,9 @@
 import { LIBRARY_NAME } from '@consts/config'
-import { colorExists, addToColorCache } from '@utils/colorCache'
+import { colorExists, addToColorCache } from '@plugin/colorCache'
 
 export interface PenpotLibrary {
   createColor: () => PenpotColor
-  getColors: () => PenpotColor[]
+  colors: PenpotColor[]
 }
 
 export interface PenpotColor {

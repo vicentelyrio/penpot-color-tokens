@@ -1,7 +1,9 @@
+import { useEffect } from 'preact/hooks'
 import { Actions } from '@components/actions/actions'
 import { Colors } from '@components/colors/colors'
+import { Toaster } from '@components/toaster/toaster'
 import { useAppState } from '@hooks/useAppState'
-import { clsx } from '@utils/clsx'
+import { useToaster } from '@hooks/useToaster'
 
 export function App() {
   const {
@@ -19,6 +21,22 @@ export function App() {
     setTints,
     setShades
   } = useAppState()
+
+  const { toasts, showToast, removeToast } = useToaster()
+
+  useEffect(() => {
+    if (!isGenerating && generationResult) {
+      const { success, stats } = generationResult
+      const { failed, skipped } = stats ?? {}
+
+      showToast(
+        generationResult.message,
+        !success || failed ? 'error' : (skipped ? 'warning' : 'success'),
+        5000,
+        stats
+      )
+    }
+  }, [isGenerating, generationResult, showToast])
 
   return (
     <>
@@ -45,27 +63,7 @@ export function App() {
         </p>
       )}
 
-      {!isGenerating && generationResult && (
-        <div className={clsx([generationResult.success ? 'success' : 'error'])}>
-          <p className="body-l">{generationResult.message}</p>
-
-          {generationResult.stats && (
-            <div className="generation-stats">
-              <p className="body-l">
-                {generationResult.stats.created > 0 &&
-                  <span className="success">Created: {generationResult.stats.created}</span>
-                }
-                {generationResult.stats.skipped > 0 &&
-                  <span className="warning"> | Skipped (already exist): {generationResult.stats.skipped}</span>
-                }
-                {generationResult.stats.failed > 0 &&
-                  <span className="error"> | Failed: {generationResult.stats.failed}</span>
-                }
-              </p>
-            </div>
-          )}
-        </div>
-      )}
+      <Toaster toasts={toasts} onRemove={removeToast} />
     </>
   )
 }

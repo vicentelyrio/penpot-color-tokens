@@ -45,27 +45,27 @@ export function useAppState() {
   }, [steps, tints, shades, palettes])
 
   useEffect(() => {
-    const handleMessage = (event: MessageEvent) => {
-      const message = event.data
-
-      if (message.type === 'palettesGenerated') {
+    const handleMessage = ({ data }: MessageEvent) => {
+      if (data.type === 'palettesGenerated') {
         setIsGenerating(false)
+
+        const { results, success, message } = data
 
         let stats
 
-        if (message.results && Array.isArray(message.results)) {
-          const created = message.results.filter((result: ResultItem) => result.success && !result.skipped).length
-          const skipped = message.results.filter((result: ResultItem) => result.success && result.skipped).length
-          const failed = message.results.filter((result: ResultItem) => !result.success).length
+        if (results && Array.isArray(results)) {
+          const created = results.filter((result: ResultItem) => result.success && !result.skipped).length
+          const skipped = results.filter((result: ResultItem) => result.success && result.skipped).length
+          const failed = results.filter((result: ResultItem) => !result.success).length
 
           stats = { created, skipped, failed }
         }
 
         setGenerationResult({
-          success: message.success,
-          message: message.message,
+          success,
+          message,
           stats,
-          results: message.results
+          results
         })
       }
     }

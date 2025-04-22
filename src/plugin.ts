@@ -5,13 +5,11 @@ import {
   handleSavePalettesMessage,
 } from '@utils/messages'
 
-// Initialize the UI
 penpot.ui.open('Penpot Color Tokens', `./index.html?theme=${penpot.theme}`, {
   width: 760,
   height: 600,
 })
 
-// Handle theme changes
 penpot.on('themechange', (theme) => {
   penpot.ui.sendMessage({
     type: MESSAGES.THEME,
@@ -36,6 +34,4 @@ penpot.ui.onMessage((message: Message) => {
   }
 })
 
-// This empty export is needed for TypeScript, but won't affect IIFE output
-// when built with the updated vite config
 export {}

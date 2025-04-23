@@ -1,50 +1,7 @@
 import { getLocalLibrary, addColorToLibrary } from '@plugin/libraryService'
 import { LIBRARY_NAME } from '@consts/config'
 
-export async function exportAsJson(
-  tokenColors: Record<string, ColorToken>
-): Promise<ExportResult> {
-  try {
-    const colors = Object.entries(tokenColors)
-      .filter(([_, data]) => data.$type === 'color')
-      .map(([name, data]) => ({
-        name,
-        value: data.$value
-      }))
-
-    if (colors.length === 0) {
-      return {
-        success: false,
-        message: "No valid colors found in the tokens data"
-      }
-    }
-
-    const jsonString = JSON.stringify(tokenColors, null, 2)
-
-    return {
-      success: true,
-      message: `Successfully exported ${colors.length} colors as JSON.`,
-      result: jsonString
-    }
-  }
-  catch (error) {
-    return {
-      success: false,
-      message: "Failed to export as JSON: " + (error as Error).message
-    }
-  }
-}
-
-export async function generateVisualPalette(
-  _tokenColors: Record<string, ColorToken>
-): Promise<ExportResult> {
-  return {
-    success: false,
-    message: "Visual palette generation not implemented yet."
-  }
-}
-
-export async function addToLibrary(
+export async function generateColorLibrary(
   tokenColors: Record<string, ColorToken>
 ): Promise<GenerationResult> {
   try {
@@ -73,7 +30,7 @@ export async function addToLibrary(
     if (colors.length === 0) {
       return {
         success: false,
-        message: "No valid colors found in the tokens data"
+        message: 'No valid colors found in the tokens data'
       }
     }
 
@@ -92,14 +49,14 @@ export async function addToLibrary(
     catch (error) {
       return {
         success: false,
-        message: "Error accessing Penpot API: " + (error as Error).message
+        message: 'Error accessing Penpot API: ' + (error as Error).message
       }
     }
   }
   catch (error) {
     return {
       success: false,
-      message: "Failed to process palette: " + (error as Error).message
+      message: 'Failed to process palette: ' + (error as Error).message
     }
   }
 }

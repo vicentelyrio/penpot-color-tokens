@@ -1,13 +1,13 @@
 import { MESSAGES } from '@consts/messages'
+import { LIBRARY_NAME } from '@consts/config'
+
 import {
-  handleAddColorMessage,
-  handleAddColorPaletteMessage,
-  handleSavePalettesMessage,
-  handleExportAsJsonMessage,
-  handleGenerateVisualPaletteMessage,
+  handleColorLibraryMessage,
+  handleGenerateComponentsMessage,
+  handleGenerateJsonMessage,
 } from '@plugin/messages'
 
-penpot.ui.open('Penpot Color Tokens', `./index.html?theme=${penpot.theme}`, {
+penpot.ui.open(LIBRARY_NAME, `./index.html?theme=${penpot.theme}`, {
   width: 900,
   height: 600,
 })
@@ -21,24 +21,16 @@ penpot.on('themechange', (theme) => {
 
 penpot.ui.onMessage((message: Message) => {
   switch (message.type) {
-    case MESSAGES.ADD_COLOR:
-      handleAddColorMessage(message)
+    case MESSAGES.GENERATE_COLOR_LIBRARY:
+      handleColorLibraryMessage(message)
       break
 
-    case MESSAGES.ADD_COLOR_PALETTE:
-      handleAddColorPaletteMessage(message)
+    case MESSAGES.GENERATE_JSON:
+      handleGenerateJsonMessage(message)
       break
 
-    case MESSAGES.SAVE_PALETTES:
-      handleSavePalettesMessage(message)
-      break
-
-    case MESSAGES.EXPORT_AS_JSON:
-      handleExportAsJsonMessage(message)
-      break
-
-    case MESSAGES.GENERATE_VISUAL_PALETTE:
-      handleGenerateVisualPaletteMessage(message)
+    case MESSAGES.GENERATE_COMPONENTS:
+      handleGenerateComponentsMessage(message)
       break
   }
 })

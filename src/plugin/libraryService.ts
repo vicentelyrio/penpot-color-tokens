@@ -25,7 +25,7 @@ export function addColorToLibrary(
       name,
       success: true,
       skipped: true,
-      message: "Color with this name already exists in this path"
+      message: 'Color with this name already exists in this path'
     }
   }
 
@@ -59,7 +59,7 @@ export function isLibraryAvailable(): boolean {
 
 export function getLocalLibrary(): PenpotLibrary {
   if (!isLibraryAvailable()) {
-    throw new Error("Library API not available")
+    throw new Error('Library API not available')
   }
   return penpot.library.local as unknown as PenpotLibrary
 }

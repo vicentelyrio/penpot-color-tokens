@@ -28,7 +28,7 @@ export function useGenerate({
   const [exportResult, setExportResult] = useState<null | ExportResult>(null)
 
   const onMessageReturn = useCallback(({ data }: MessageEvent) => {
-    if (data.type === MESSAGES.PALETTE_GENERATED) {
+    if (data.type === MESSAGES.COLOR_LIBRARY_GENERATED) {
       const { results, success, message } = data
       const stats = { created: 0, skipped: 0, failed: 0 }
 
@@ -50,7 +50,7 @@ export function useGenerate({
       })
     }
 
-    if (data.type === MESSAGES.JSON_EXPORTED) {
+    if (data.type === MESSAGES.JSON_GENERATED) {
       setIsExporting(false)
 
       const { success, message, jsonData } = data
@@ -66,7 +66,7 @@ export function useGenerate({
       }
     }
 
-    if (data.type === MESSAGES.VISUAL_PALETTE_GENERATED) {
+    if (data.type === MESSAGES.COMPONENTS_GENERATED) {
       setIsGenerating(false)
 
       const { success, message } = data
@@ -102,7 +102,7 @@ export function useGenerate({
       setGenerationResult(null)
 
       parent.postMessage({
-        type: MESSAGES.SAVE_PALETTES,
+        type: MESSAGES.GENERATE_COLOR_LIBRARY,
         tokens: tokenData
       }, '*')
     }
@@ -112,7 +112,7 @@ export function useGenerate({
       setExportResult(null)
 
       parent.postMessage({
-        type: MESSAGES.EXPORT_AS_JSON,
+        type: MESSAGES.GENERATE_JSON,
         tokens: tokenData
       }, '*')
     }
@@ -122,7 +122,7 @@ export function useGenerate({
       setGenerationResult(null)
 
       parent.postMessage({
-        type: MESSAGES.GENERATE_VISUAL_PALETTE,
+        type: MESSAGES.GENERATE_COMPONENTS,
         tokens: tokenData
       }, '*')
     }

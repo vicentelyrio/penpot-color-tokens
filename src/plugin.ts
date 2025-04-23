@@ -3,10 +3,12 @@ import {
   handleAddColorMessage,
   handleAddColorPaletteMessage,
   handleSavePalettesMessage,
+  handleExportAsJsonMessage,
+  handleGenerateVisualPaletteMessage,
 } from '@plugin/messages'
 
 penpot.ui.open('Penpot Color Tokens', `./index.html?theme=${penpot.theme}`, {
-  width: 760,
+  width: 900,
   height: 600,
 })
 
@@ -29,6 +31,14 @@ penpot.ui.onMessage((message: Message) => {
 
     case MESSAGES.SAVE_PALETTES:
       handleSavePalettesMessage(message)
+      break
+
+    case MESSAGES.EXPORT_AS_JSON:
+      handleExportAsJsonMessage(message)
+      break
+
+    case MESSAGES.GENERATE_VISUAL_PALETTE:
+      handleGenerateVisualPaletteMessage(message)
       break
   }
 })

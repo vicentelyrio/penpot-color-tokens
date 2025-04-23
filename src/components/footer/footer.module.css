@@ -1,4 +1,4 @@
-.actions {
+.footer {
   background: var(--background-secondary);
   border-radius: var(--spacing-12);
   display: flex;
@@ -15,15 +15,4 @@
   gap: var(--spacing-12);
   align-items: center;
   padding: 0 var(--spacing-12);
-}
-
-.steps {
-  display: flex;
-  flex-flow: row;
-  align-items: center;
-  gap: var(--spacing-12);
-}
-
-.stepsInput {
-  width: calc(var(--spacing-40) * 2);
 }

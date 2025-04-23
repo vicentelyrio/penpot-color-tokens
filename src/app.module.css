@@ -1,0 +1,9 @@
+.workspace {
+  height: 100vh;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: stretch;
+  justify-content: stretch;
+  gap: var(--spacing-16);
+  padding-top: var(--spacing-16);
+}

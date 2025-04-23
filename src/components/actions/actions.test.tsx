@@ -7,11 +7,17 @@ describe('Actions Component', () => {
     steps: 8,
     tints: true,
     shades: true,
+    libraryMode: true,
+    visualPaletteMode: true,
+    jsonMode: true,
     onAddPalette: vi.fn(),
     onSavePalettes: vi.fn(),
     setSteps: vi.fn(),
     setTints: vi.fn(),
-    setShades: vi.fn()
+    setShades: vi.fn(),
+    setLibraryMode: vi.fn(),
+    setVisualPaletteMode: vi.fn(),
+    setJsonMode: vi.fn()
   }
 
   beforeEach(() => {
@@ -44,7 +50,7 @@ describe('Actions Component', () => {
 
   it('should call setTints when tints checkbox changes', () => {
     const setTints = vi.fn()
-    
+
     render(<Actions {...mockProps} setTints={setTints} />)
 
     const tintsCheckbox = screen.getByLabelText(/tints/i)
@@ -55,7 +61,7 @@ describe('Actions Component', () => {
 
   it('should call setShades when shades checkbox changes', () => {
     const setShades = vi.fn()
-    
+
     render(<Actions {...mockProps} setShades={setShades} />)
 
     const shadesCheckbox = screen.getByLabelText(/shades/i)

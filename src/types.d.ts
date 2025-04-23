@@ -21,12 +21,18 @@ type ResultItem = {
 type GenerationResult = {
   success: boolean
   message: string
+  results?: ResultItem[]
   stats?: {
     created: number
     skipped: number
     failed: number
   }
-  results?: ResultItem[]
+}
+
+type ExportResult = {
+  success: boolean
+  message: string
+  result?: string
 }
 
 type Message = {

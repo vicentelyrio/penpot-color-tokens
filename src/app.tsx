@@ -1,26 +1,58 @@
 import { useEffect } from 'preact/hooks'
+
 import { Actions } from '@components/actions/actions'
 import { Colors } from '@components/colors/colors'
 import { Toaster } from '@components/toaster/toaster'
-import { useAppState } from '@hooks/useAppState'
+import { Footer } from '@components/footer/footer'
+
 import { useToaster } from '@hooks/useToaster'
+import { usePaletteOptions } from '@hooks/usePaletteOptions'
+import { usePalette } from '@hooks/usePalette'
+import { useGenerateOptions } from '@hooks/useGenerateOptions'
+import { useGenerate } from '@hooks/useGenerate'
+
+import classes from './app.module.css'
 
 export function App() {
   const {
     steps,
     tints,
     shades,
+    setSteps,
+    setTints,
+    setShades,
+  } = usePaletteOptions()
+
+  const {
     palettes,
-    isGenerating,
-    generationResult,
     onAddPalette,
     onRemovePalette,
     onSetPalette,
-    onSavePalettes,
-    setSteps,
-    setTints,
-    setShades
-  } = useAppState()
+  } = usePalette({ steps, tints, shades })
+
+  const {
+    libraryMode,
+    jsonMode,
+    visualPaletteMode,
+    setLibraryMode,
+    setJsonMode,
+    setVisualPaletteMode,
+  } = useGenerateOptions()
+
+  const {
+    isGenerating,
+    isExporting,
+    generationResult,
+    exportResult,
+    onGeneratePalettes,
+  } = useGenerate({
+    palettes,
+    shades,
+    tints,
+    jsonMode,
+    libraryMode,
+    visualPaletteMode
+  })
 
   const { toasts, showToast, removeToast } = useToaster()
 
@@ -38,8 +70,18 @@ export function App() {
     }
   }, [isGenerating, generationResult, showToast])
 
+  useEffect(() => {
+    if (!isExporting && exportResult) {
+      showToast(
+        exportResult.message,
+        exportResult.success ? 'success' : 'error',
+        5000
+      )
+    }
+  }, [isExporting, exportResult, showToast])
+
   return (
-    <>
+    <div className={classes.workspace}>
       <Actions
         tints={tints}
         shades={shades}
@@ -48,7 +90,6 @@ export function App() {
         setShades={setShades}
         setSteps={setSteps}
         onAddPalette={onAddPalette}
-        onSavePalettes={onSavePalettes}
       />
 
       <Colors
@@ -59,11 +100,26 @@ export function App() {
 
       {isGenerating && (
         <p className="body-l">
-          Creating... This may take a few seconds
+          Creating Colors...
+        </p>
+      )}
+
+      {isExporting && (
+        <p className="body-l">
+          Exporting JSON...
         </p>
       )}
 
       <Toaster toasts={toasts} onRemove={removeToast} />
-    </>
+      <Footer
+        libraryMode={libraryMode}
+        jsonMode={jsonMode}
+        visualPaletteMode={visualPaletteMode}
+        setLibraryMode={setLibraryMode}
+        setJsonMode={setJsonMode}
+        setVisualPaletteMode={setVisualPaletteMode}
+        onSavePalettes={onGeneratePalettes}
+      />
+    </div>
   )
 }

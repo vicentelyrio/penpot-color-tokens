@@ -11,5 +11,4 @@ body {
   width: 100%;
   height: 100lvh;
   overflow: auto;
-  padding: var(--spacing-16);
 }

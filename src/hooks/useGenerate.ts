@@ -24,6 +24,7 @@ export function useGenerate({
 }: UseGenerateProps) {
   const [isGenerating, setIsGenerating] = useState(false)
   const [isExporting, setIsExporting] = useState(false)
+  const [isCreating, setIsCreating] = useState(false)
   const [generationResult, setGenerationResult] = useState<null | GenerationResult>(null)
   const [exportResult, setExportResult] = useState<null | ExportResult>(null)
 
@@ -67,7 +68,7 @@ export function useGenerate({
     }
 
     if (data.type === MESSAGES.COMPONENTS_GENERATED) {
-      setIsGenerating(false)
+      setIsCreating(false)
 
       const { success, message } = data
 
@@ -83,7 +84,8 @@ export function useGenerate({
     setGenerationResult,
     setExportResult,
     setGenerationResult,
-    setIsExporting
+    setIsExporting,
+    setIsCreating
   ])
 
   useEffect(() => {
@@ -118,7 +120,7 @@ export function useGenerate({
     }
 
     if (visualPaletteMode) {
-      setIsGenerating(true)
+      setIsCreating(true)
       setGenerationResult(null)
 
       parent.postMessage({
@@ -131,6 +133,7 @@ export function useGenerate({
   return {
     isGenerating,
     isExporting,
+    isCreating,
     generationResult,
     exportResult,
     onGeneratePalettes,

@@ -42,6 +42,7 @@ export function App() {
   const {
     isGenerating,
     isExporting,
+    isCreating,
     generationResult,
     exportResult,
     onGeneratePalettes,
@@ -98,17 +99,9 @@ export function App() {
         onRemovePalette={onRemovePalette}
       />
 
-      {isGenerating && (
-        <p className="body-l">
-          Creating Colors...
-        </p>
-      )}
-
-      {isExporting && (
-        <p className="body-l">
-          Exporting JSON...
-        </p>
-      )}
+      {isCreating && <p className="body-l">Creating Color Components...</p>}
+      {isGenerating && <p className="body-l">Creating Colors...</p>}
+      {isExporting && <p className="body-l">Exporting JSON...</p>}
 
       <Toaster toasts={toasts} onRemove={removeToast} />
       <Footer

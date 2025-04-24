@@ -34,7 +34,6 @@ function createColorRectangle(
       elements.push(nameText)
     }
 
-    // Create hex text below
     const hexText = penpot.createText(color.toUpperCase())
     if (hexText) {
       hexText.name = `${name}-hex`
@@ -50,28 +49,25 @@ function createColorRectangle(
 }
 
 function getBaseColorName(colorName: string): string {
-  const match = colorName.match(/^([a-zA-Z-]+?)[-/]?[0-9]+/)
-    || colorName.match(/^([a-zA-Z-]+?)[-/]?(light|dark|lightest|darkest|lighter|darker)/)
-    || [null, colorName]
-
-  return match ? match[1] : colorName
+  const match = colorName.match(/^(.*?)(?:-(?:pale|shade))?-\d+$/) || [null, colorName]
+  return match[1]
 }
 
-// Main function to generate components
 export async function generateComponents(tokenColors: Record<string, ColorToken>): Promise<ExportResult> {
-  const SWATCH_SIZE = 120
+  const SWATCH_WIDTH = 180
+  const SWATCH_HEIGHT = 60
   const PADDING = 20
-  const GAP = 0
+  const HORIZONTAL_GAP = 0
   const VERTICAL_GAP = 0
 
   try {
-    // Extract colors from tokens
     const colors = Object.entries(tokenColors)
       .filter(([_, data]) => data.$type === 'color')
       .map(([name, data]) => ({
         name,
         color: data.$value,
-        baseColorName: getBaseColorName(name)
+        baseColorName: getBaseColorName(name),
+        type: name.includes('-pale-') ? 'pale' : name.includes('-shade-') ? 'shade' : 'base'
       }))
 
     if (colors.length === 0) {
@@ -81,8 +77,7 @@ export async function generateComponents(tokenColors: Record<string, ColorToken>
       }
     }
 
-    // Group colors by their base color name
-    const colorGroups: Record<string, Array<{name: string, color: string}>> = {}
+    const colorGroups: Record<string, Array<{name: string, color: string, type: string}>> = {}
 
     colors.forEach(color => {
       if (!colorGroups[color.baseColorName]) {
@@ -90,54 +85,59 @@ export async function generateComponents(tokenColors: Record<string, ColorToken>
       }
       colorGroups[color.baseColorName].push({
         name: color.name,
-        color: color.color
-      })
-    })
-
-    // Sort colors within each group (e.g., by shade value)
-    Object.keys(colorGroups).forEach(groupName => {
-      colorGroups[groupName].sort((a, b) => {
-        // Extract numbers from color names if they exist (e.g., primary-500 -> 500)
-        const numA = parseInt((a.name.match(/\d+/) || ['0'])[0])
-        const numB = parseInt((b.name.match(/\d+/) || ['0'])[0])
-        return numA - numB
+        color: color.color,
+        type: color.type
       })
     })
 
     const colorComponents: any[] = []
-    let currentY = PADDING
+    let currentX = PADDING
 
-    // Create a row for each color group
     Object.entries(colorGroups).forEach(([groupName, groupColors]) => {
-      const rowElements: any[] = []
+      groupColors.sort((a, b) => {
+        const numA = parseInt((a.name.match(/\d+/) || ['500'])[0])
+        const numB = parseInt((b.name.match(/\d+/) || ['500'])[0])
+
+        if (a.type !== b.type) {
+          if (a.type === 'base') return 0
+          if (b.type === 'base') return -1
+          if (a.type === 'pale') return -1
+          return 1
+        }
+
+        if (a.type === 'pale') return numA - numB
+        return numA - numB
+      })
+
+      const totalHeight = groupColors.length * (SWATCH_HEIGHT + VERTICAL_GAP) - VERTICAL_GAP
+      const startY = PADDING + (totalHeight / 2) - (groupColors.length * (SWATCH_HEIGHT + VERTICAL_GAP)) / 2
+
+      const columnElements: any[] = []
 
       groupColors.forEach((color, index) => {
-        const x = PADDING + index * (SWATCH_SIZE + GAP)
+        const y = startY + index * (SWATCH_HEIGHT + VERTICAL_GAP)
 
         const elements = createColorRectangle(
           color.name,
           color.color,
-          x,
-          currentY,
-          SWATCH_SIZE,
-          SWATCH_SIZE
+          currentX,
+          y,
+          SWATCH_WIDTH,
+          SWATCH_HEIGHT
         )
 
-        rowElements.push(...elements)
+        columnElements.push(...elements)
       })
 
-      // Group the row elements
-      const groupRow = penpot.group(rowElements)
-      if (groupRow) {
-        groupRow.name = `Color Set: ${groupName}`
-        colorComponents.push(groupRow)
+      const groupColumn = penpot.group(columnElements)
+      if (groupColumn) {
+        groupColumn.name = `Color Set: ${groupName}`
+        colorComponents.push(groupColumn)
       }
 
-      // Move to the next row
-      currentY += SWATCH_SIZE + VERTICAL_GAP
+      currentX += SWATCH_WIDTH + HORIZONTAL_GAP
     })
 
-    // Group all color components
     if (colorComponents.length > 0) {
       const palette = penpot.group(colorComponents)
 

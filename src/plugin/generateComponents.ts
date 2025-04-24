@@ -1,10 +1,77 @@
+import { getBrightness } from '@utils/colorBrightness'
+
+function createColorRectangle(
+  name: string,
+  color: string,
+  x: number,
+  y: number,
+  width: number,
+  height: number) {
+
+  const elements = []
+
+  const rectangle = penpot.createRectangle()
+
+  const padding = 10
+
+  if (rectangle) {
+    rectangle.resize(width, height)
+    rectangle.name = name
+    rectangle.x = x
+    rectangle.y = y
+    rectangle.fills = [{ fillOpacity: 1, fillColor: color }]
+    elements.push(rectangle)
+
+    const textColor = getBrightness(color) > 128 ? '#000000' : '#FFFFFF'
+    const nameText = penpot.createText(name)
+
+    if (nameText) {
+      nameText.name = `${name}-label`
+      nameText.fontSize = '11'
+      nameText.x = x + padding
+      nameText.y = y + padding
+      nameText.fills = [{ fillOpacity: 1, fillColor: textColor }]
+      elements.push(nameText)
+    }
+
+    // Create hex text below
+    const hexText = penpot.createText(color.toUpperCase())
+    if (hexText) {
+      hexText.name = `${name}-hex`
+      hexText.fontSize = '11'
+      hexText.x = x + padding
+      hexText.y = y + padding + 20
+      hexText.fills = [{ fillOpacity: 1, fillColor: textColor }]
+      elements.push(hexText)
+    }
+  }
+
+  return elements
+}
+
+function getBaseColorName(colorName: string): string {
+  const match = colorName.match(/^([a-zA-Z-]+?)[-/]?[0-9]+/)
+    || colorName.match(/^([a-zA-Z-]+?)[-/]?(light|dark|lightest|darkest|lighter|darker)/)
+    || [null, colorName]
+
+  return match ? match[1] : colorName
+}
+
+// Main function to generate components
 export async function generateComponents(tokenColors: Record<string, ColorToken>): Promise<ExportResult> {
+  const SWATCH_SIZE = 120
+  const PADDING = 20
+  const GAP = 0
+  const VERTICAL_GAP = 0
+
   try {
+    // Extract colors from tokens
     const colors = Object.entries(tokenColors)
       .filter(([_, data]) => data.$type === 'color')
       .map(([name, data]) => ({
         name,
-        color: data.$value
+        color: data.$value,
+        baseColorName: getBaseColorName(name)
       }))
 
     if (colors.length === 0) {
@@ -14,325 +81,83 @@ export async function generateComponents(tokenColors: Record<string, ColorToken>
       }
     }
 
-    // Configuration for the visual palette
-    const swatchSize = 120
-    const padding = 20
-    const gap = 10
-    const columns = 5
-    const rows = Math.ceil(colors.length / columns)
+    // Group colors by their base color name
+    const colorGroups: Record<string, Array<{name: string, color: string}>> = {}
 
-    // Calculate total dimensions for the board
-    const totalWidth = padding * 2 + Math.min(columns, colors.length) * swatchSize + (Math.min(columns, colors.length) - 1) * gap
-    const totalHeight = padding * 2 + rows * swatchSize + (rows - 1) * gap
+    colors.forEach(color => {
+      if (!colorGroups[color.baseColorName]) {
+        colorGroups[color.baseColorName] = []
+      }
+      colorGroups[color.baseColorName].push({
+        name: color.name,
+        color: color.color
+      })
+    })
 
-    try {
-      console.log('Creating visual palette with Penpot API')
-      console.log(`Dimensions: ${colors.length} colors in ${rows} rows × ${Math.min(columns, colors.length)} columns`)
-      console.log(`Total size: ${totalWidth}x${totalHeight}px`)
+    // Sort colors within each group (e.g., by shade value)
+    Object.keys(colorGroups).forEach(groupName => {
+      colorGroups[groupName].sort((a, b) => {
+        // Extract numbers from color names if they exist (e.g., primary-500 -> 500)
+        const numA = parseInt((a.name.match(/\d+/) || ['0'])[0])
+        const numB = parseInt((b.name.match(/\d+/) || ['0'])[0])
+        return numA - numB
+      })
+    })
 
-      // Using any to bypass TypeScript limitations
-      const api = penpot as any
-      let shapesCreated = 0
+    const colorComponents: any[] = []
+    let currentY = PADDING
 
-      // Create a page/artboard
-      let page
-      try {
-        if (typeof api.createPage === 'function') {
-          page = api.createPage()
-          page.name = 'Color Palette'
-          shapesCreated++
-          console.log('Created page:', page.name)
-        }
-      } catch (pageError) {
-        console.warn('Could not create page:', pageError)
+    // Create a row for each color group
+    Object.entries(colorGroups).forEach(([groupName, groupColors]) => {
+      const rowElements: any[] = []
+
+      groupColors.forEach((color, index) => {
+        const x = PADDING + index * (SWATCH_SIZE + GAP)
+
+        const elements = createColorRectangle(
+          color.name,
+          color.color,
+          x,
+          currentY,
+          SWATCH_SIZE,
+          SWATCH_SIZE
+        )
+
+        rowElements.push(...elements)
+      })
+
+      // Group the row elements
+      const groupRow = penpot.group(rowElements)
+      if (groupRow) {
+        groupRow.name = `Color Set: ${groupName}`
+        colorComponents.push(groupRow)
       }
 
-      // Attempt different approaches for creating the color components
-      for (let i = 0; i < colors.length; i++) {
-        const color = colors[i]
+      // Move to the next row
+      currentY += SWATCH_SIZE + VERTICAL_GAP
+    })
 
-        // Calculate position in the grid
-        const row = Math.floor(i / columns)
-        const col = i % columns
-        const x = padding + col * (swatchSize + gap)
-        const y = padding + row * (swatchSize + gap)
+    // Group all color components
+    if (colorComponents.length > 0) {
+      const palette = penpot.group(colorComponents)
 
-        try {
-          // Strategy 1: Create directly using shape functions
-          let component
-
-          // Try to create a component or group to hold our elements
-          if (typeof api.createGroup === 'function') {
-            component = api.createGroup()
-            component.x = x
-            component.y = y
-            console.log(`Created group at ${x},${y}`)
-          }
-
-          // Create the colored rectangle
-          if (typeof api.createRectangle === 'function') {
-            const rect = api.createRectangle()
-            rect.x = x
-            rect.y = y
-
-            // Set dimensions
-            if (typeof rect.resize === 'function') {
-              rect.resize(swatchSize, swatchSize)
-            }
-
-            // Set corner radius for rounded corners
-            if ('rx' in rect) {
-              rect.rx = 10
-              rect.ry = 10
-            } else if (typeof api.setCornerRadius === 'function') {
-              api.setCornerRadius(rect, 10)
-            }
-
-            // Try multiple fill approaches
-            try {
-              // Try setting fill with the raw color value string
-              if (typeof api.setFill === 'function') {
-                api.setFill(rect, color.color)
-                console.log(`Set fill using setFill with: ${color.color}`)
-              }
-              // Try creating a color fill object
-              else if (typeof api.createColorFill === 'function') {
-                const fill = api.createColorFill(color.color)
-                if (rect.fills && Array.isArray(rect.fills)) {
-                  rect.fills = [fill]
-                  console.log(`Set fill using createColorFill with: ${color.color}`)
-                }
-              }
-              // Try setting with hexcode
-              else if (rect.fill) {
-                rect.fill = color.color
-                console.log(`Set fill directly with: ${color.color}`)
-              }
-              // Try setting using fill property with object
-              else if (rect.fills && Array.isArray(rect.fills)) {
-                rect.fills = [{
-                  type: 'color',
-                  color: color.color,
-                  opacity: 1
-                }]
-                console.log(`Set fills array with: ${color.color}`)
-              }
-            } catch (fillError) {
-              console.warn(`Fill error for ${color.name}:`, fillError)
-            }
-
-            // Add to component or directly to page
-            if (component && typeof api.addToGroup === 'function') {
-              api.addToGroup(component, rect)
-            } else if (typeof api.addToCurrentPage === 'function') {
-              api.addToCurrentPage(rect)
-            }
-
-            shapesCreated++
-          }
-
-          // Create the text elements
-          try {
-            // Create name text element
-            if (typeof api.createText === 'function') {
-              const nameText = api.createText()
-              nameText.x = x + swatchSize / 2
-              nameText.y = y + swatchSize / 2 - 10
-
-              // Set text content
-              if (typeof api.setText === 'function') {
-                api.setText(nameText, color.name)
-              } else if ('characters' in nameText) {
-                nameText.characters = color.name
-              } else if ('content' in nameText) {
-                nameText.content = color.name
-              }
-
-              // Set text properties
-              if (typeof api.setTextProperties === 'function') {
-                api.setTextProperties(nameText, {
-                  fontSize: 14,
-                  fontWeight: 'medium',
-                  textAlign: 'center'
-                })
-              }
-
-              // Center text horizontally
-              if (typeof api.centerText === 'function') {
-                api.centerText(nameText, 'horizontal')
-              }
-
-              // Add to component or directly to page
-              if (component && typeof api.addToGroup === 'function') {
-                api.addToGroup(component, nameText)
-              } else if (typeof api.addToCurrentPage === 'function') {
-                api.addToCurrentPage(nameText)
-              }
-
-              shapesCreated++
-            }
-
-            // Create hex text element
-            if (typeof api.createText === 'function') {
-              const hexText = api.createText()
-              hexText.x = x + swatchSize / 2
-              hexText.y = y + swatchSize / 2 + 10
-
-              // Set text content
-              if (typeof api.setText === 'function') {
-                api.setText(hexText, color.color)
-              } else if ('characters' in hexText) {
-                hexText.characters = color.color
-              } else if ('content' in hexText) {
-                hexText.content = color.color
-              }
-
-              // Set text properties
-              if (typeof api.setTextProperties === 'function') {
-                api.setTextProperties(hexText, {
-                  fontSize: 12,
-                  fontWeight: 'normal',
-                  textAlign: 'center'
-                })
-              }
-
-              // Center text horizontally
-              if (typeof api.centerText === 'function') {
-                api.centerText(hexText, 'horizontal')
-              }
-
-              // Add to component or directly to page
-              if (component && typeof api.addToGroup === 'function') {
-                api.addToGroup(component, hexText)
-              } else if (typeof api.addToCurrentPage === 'function') {
-                api.addToCurrentPage(hexText)
-              }
-
-              shapesCreated++
-            }
-          } catch (textError) {
-            console.warn(`Text error for ${color.name}:`, textError)
-          }
-
-          // Add the component to the page if we created one
-          if (component && typeof api.addToCurrentPage === 'function') {
-            api.addToCurrentPage(component)
-          }
-
-        } catch (componentError) {
-          console.warn(`Failed to create component for ${color.name}:`, componentError)
-        }
-      }
-
-      // Strategy 2: If the above didn't work, try a different approach - create a complete component
-      if (shapesCreated === 0) {
-        console.log('Attempting alternative component creation approach')
-
-        for (let i = 0; i < colors.length; i++) {
-          const color = colors[i]
-
-          // Calculate position in the grid
-          const row = Math.floor(i / columns)
-          const col = i % columns
-          const x = padding + col * (swatchSize + gap)
-          const y = padding + row * (swatchSize + gap)
-
-          try {
-            // Try to directly use a create component function if available
-            if (typeof api.createComponent === 'function') {
-              const component = api.createComponent(color.name)
-              component.x = x
-              component.y = y
-              component.width = swatchSize
-              component.height = swatchSize
-
-              // Set fill if available
-              if (typeof api.setComponentColor === 'function') {
-                api.setComponentColor(component, color.color)
-              }
-
-              // Set content if available
-              if (typeof api.setComponentContent === 'function') {
-                api.setComponentContent(component, {
-                  name: color.name,
-                  hex: color.color
-                })
-              }
-
-              // Add to page
-              if (typeof api.addToCurrentPage === 'function') {
-                api.addToCurrentPage(component)
-                shapesCreated++
-              }
-            }
-          } catch (altComponentError) {
-            console.warn(`Alternative component creation failed for ${color.name}:`, altComponentError)
-          }
-        }
-      }
-
-      // If nothing worked, create a simple alternative visual
-      if (shapesCreated === 0) {
-        console.log('Falling back to simple rectangle creation')
-
-        for (let i = 0; i < colors.length; i++) {
-          const color = colors[i]
-
-          // Calculate position in the grid
-          const row = Math.floor(i / columns)
-          const col = i % columns
-          const x = padding + col * (swatchSize + gap)
-          const y = padding + row * (swatchSize + gap)
-
-          try {
-            if (typeof api.createShape === 'function') {
-              const shape = api.createShape()
-              shape.x = x
-              shape.y = y
-              shape.width = swatchSize
-              shape.height = swatchSize
-
-              // Try to set color directly using a string
-              shape.fill = color.color
-
-              if (typeof api.addToCurrentPage === 'function') {
-                api.addToCurrentPage(shape)
-                shapesCreated++
-              }
-            } else if (typeof api.drawRectangle === 'function') {
-              // Alternative direct drawing method
-              api.drawRectangle({
-                x: x,
-                y: y,
-                width: swatchSize,
-                height: swatchSize,
-                fill: color.color,
-                cornerRadius: 10
-              })
-              shapesCreated++
-            }
-          } catch (simpleError) {
-            console.warn(`Simple rectangle creation failed for ${color.name}:`, simpleError)
-          }
-        }
+      if (palette) {
+        palette.name = 'Color Palette'
+        penpot.selection = [palette]
       }
 
       return {
-        success: shapesCreated > 0,
-        message: shapesCreated > 0
-          ? `Created visual palette with ${colors.length} color components in a ${rows}x${Math.min(columns, colors.length)} grid.`
-          : 'Failed to create any visual components. Check console for details.'
-      }
-    } catch (apiError) {
-      console.error('Error creating visual components:', apiError)
-
-      return {
-        success: false,
-        message: 'Could not create visual palette: ' + (apiError as Error).message
+        success: true,
+        message: `Created visual palette with ${Object.keys(colorGroups).length} color sets.`
       }
     }
-  } catch (error) {
-    console.error('Error in generateVisualPalette:', error)
+
+    return {
+      success: false,
+      message: 'Failed to create any visual components.'
+    }
+  }
+  catch (error) {
     return {
       success: false,
       message: 'Failed to create visual palette: ' + (error as Error).message

@@ -1,4 +1,4 @@
-![Penpot Color Tokens](https://raw.githubusercontent.com/vicentelyrio/penpot-color-tokens/refs/heads/main/public/icon.png | =200x200)
+![Penpot Color Tokens](https://raw.githubusercontent.com/vicentelyrio/penpot-color-tokens/refs/heads/main/public/icon.png)
 
 ## Penpot Color Tokens
 An opinionated color palette generator plugin for Penpot that helps you create beautiful and consistent color palettes with tints and shades.
@@ -28,8 +28,8 @@ An opinionated color palette generator plugin for Penpot that helps you create b
 5. The plugin will appear in your plugins panel, ready to use
 
 ## Screenshots
-![Penpot Color Tokens](https://raw.githubusercontent.com/vicentelyrio/penpot-color-tokens/refs/heads/main/public/image-01.png | width=600)
-![Penpot Color Tokens](https://raw.githubusercontent.com/vicentelyrio/penpot-color-tokens/refs/heads/main/public/image-02.png | width=600)
+![Penpot Color Tokens](https://raw.githubusercontent.com/vicentelyrio/penpot-color-tokens/refs/heads/main/public/image-01.png)
+![Penpot Color Tokens](https://raw.githubusercontent.com/vicentelyrio/penpot-color-tokens/refs/heads/main/public/image-02.png)
 
 ## License
 

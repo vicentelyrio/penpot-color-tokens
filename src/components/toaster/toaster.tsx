@@ -24,7 +24,7 @@ export type ToasterProps = {
 
 export function Toaster({ toasts, onRemove }: ToasterProps) {
   return (
-    <div className={classes.toasterContainer}>
+    <div className={classes.toasterContainer} data-testid="toaster-container">
       {toasts.map((toast) => (
         <Toast key={toast.id} toast={toast} onRemove={onRemove} />
       ))}
@@ -51,7 +51,7 @@ export function Toast({ toast, onRemove }: { toast: ToastProps; onRemove: (id: s
         {stats && (
           <div className={classes.toastStats}>
             <p className="body-m">
-              created: {stats.created ?? 0} | skipped: {stats.skipped ?? 0} | failed: {stats.failed ?? 0}
+              created: {String(stats.created ?? 0)} | skipped: {String(stats.skipped ?? 0)} | failed: {String(stats.failed ?? 0)}
             </p>
           </div>
         )}

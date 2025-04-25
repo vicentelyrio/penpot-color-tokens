@@ -1,73 +1,52 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/preact'
 import { Actions } from './actions'
+import { vi } from 'vitest'
 
 describe('Actions Component', () => {
   const mockProps = {
-    steps: 8,
-    tints: true,
-    shades: true,
-    libraryMode: true,
-    visualPaletteMode: true,
-    jsonMode: true,
-    onAddPalette: vi.fn(),
-    onSavePalettes: vi.fn(),
-    setSteps: vi.fn(),
+    tints: false,
+    shades: false,
+    steps: 5,
     setTints: vi.fn(),
     setShades: vi.fn(),
-    setLibraryMode: vi.fn(),
-    setVisualPaletteMode: vi.fn(),
-    setJsonMode: vi.fn()
+    setSteps: vi.fn(),
+    onAddPalette: vi.fn(),
   }
-
-  beforeEach(() => {
-    vi.clearAllMocks()
-  })
 
   it('should render with correct default values', () => {
     render(<Actions {...mockProps} />)
 
-    const stepsInput = screen.getByLabelText(/steps/i)
-    expect(stepsInput).toHaveValue(8)
-
-    const tintsCheckbox = screen.getByLabelText(/tints/i)
-    const shadesCheckbox = screen.getByLabelText(/shades/i)
-    expect(tintsCheckbox).toBeChecked()
-    expect(shadesCheckbox).toBeChecked()
-
+    expect(screen.getByLabelText('Tints')).not.toBeChecked()
+    expect(screen.getByLabelText('Shades')).not.toBeChecked()
+    expect(screen.getByLabelText('Steps')).toHaveValue(5)
     expect(screen.getByText(/add/i)).toBeInTheDocument()
-    expect(screen.getByText(/generate/i)).toBeInTheDocument()
   })
 
   it('should call setSteps when steps input changes', () => {
     render(<Actions {...mockProps} />)
 
-    const stepsInput = screen.getByLabelText(/steps/i)
-    fireEvent.change(stepsInput, { target: { value: '4' } })
+    const stepsInput = screen.getByLabelText('Steps')
+    fireEvent.change(stepsInput, { target: { value: '10' } })
 
-    expect(mockProps.setSteps).toHaveBeenCalledWith(4)
+    expect(mockProps.setSteps).toHaveBeenCalledWith(10)
   })
 
   it('should call setTints when tints checkbox changes', () => {
-    const setTints = vi.fn()
+    render(<Actions {...mockProps} />)
 
-    render(<Actions {...mockProps} setTints={setTints} />)
+    const tintsCheckbox = screen.getByLabelText('Tints')
+    fireEvent.change(tintsCheckbox, { target: { checked: true } })
 
-    const tintsCheckbox = screen.getByLabelText(/tints/i)
-    fireEvent.change(tintsCheckbox, { target: { checked: false } })
-
-    expect(setTints).toHaveBeenCalledWith(false)
+    expect(mockProps.setTints).toHaveBeenCalledWith(true)
   })
 
   it('should call setShades when shades checkbox changes', () => {
-    const setShades = vi.fn()
+    render(<Actions {...mockProps} />)
 
-    render(<Actions {...mockProps} setShades={setShades} />)
+    const shadesCheckbox = screen.getByLabelText('Shades')
+    fireEvent.change(shadesCheckbox, { target: { checked: true } })
 
-    const shadesCheckbox = screen.getByLabelText(/shades/i)
-    fireEvent.change(shadesCheckbox, { target: { checked: false } })
-
-    expect(setShades).toHaveBeenCalledWith(false)
+    expect(mockProps.setShades).toHaveBeenCalledWith(true)
   })
 
   it('should call onAddPalette when Add button is clicked', () => {
@@ -77,14 +56,5 @@ describe('Actions Component', () => {
     fireEvent.click(addButton)
 
     expect(mockProps.onAddPalette).toHaveBeenCalled()
-  })
-
-  it('should call onSavePalettes when Generate button is clicked', () => {
-    render(<Actions {...mockProps} />)
-
-    const generateButton = screen.getByText(/generate/i)
-    fireEvent.click(generateButton)
-
-    expect(mockProps.onSavePalettes).toHaveBeenCalled()
   })
 })

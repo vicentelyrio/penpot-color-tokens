@@ -1,68 +1,30 @@
 # Penpot Color Tokens
 
-A plugin for Penpot that generates color palettes from W3C design tokens format.
+An opinionated color palette generator plugin for Penpot that helps you create beautiful and consistent color palettes with tints and shades.
 
 ## Features
 
-- Creates color swatches from W3C design tokens
-- Adds colors to the Penpot library
-- Generates visual color palette with:
-  - Color swatches
-  - Color names
-  - Hex values
-  - Automatically adjusts text color for readability
+- Generates tints and shades from base colors
+  - Add how many colors you want
+  - Choose how many variations you want for each color
+  - Automatically calculates balanced color steps
 
 ## Usage
 
-1. Install the plugin in your Penpot workspace
-2. Prepare your color tokens in W3C design tokens format:
+1. Choose how many tints and shades you want for each color
+2. The plugin will generate:
+   - A complete color palette with your specified variations
+   - Penpot components with visual representation of your colors
+   - Color tokens in your Penpot library
+   - W3C-compliant JSON export of your palette
 
-```json
-{
-  "color": {
-    "primary": { "value": "#0066CC", "type": "color" },
-    "secondary": { "value": "#FF6347", "type": "color" },
-    "accent": { "value": "#FFD700", "type": "color" }
-  }
-}
-```
+## Installation
 
-3. Call the `onSavePalettes` function with your tokens
-4. The plugin will create a grid of color swatches and add the colors to your library
-
-## API Integration
-
-The plugin uses the following Penpot API functions:
-
-- `createRectangle` - Creates the color swatch rectangles
-- `createText` - Creates text elements for color names and hex values
-- `addLibraryColor` - Adds colors to the Penpot library
-- `addToCurrentPage` - Adds elements to the current page
-- `centerInViewport` - Centers the generated palette in the viewport
-
-## Customization
-
-You can customize the plugin by modifying:
-
-- `swatchSize` - Size of each color swatch
-- `padding` - Padding around the palette
-- `gap` - Space between swatches
-- `columns` - Number of columns in the grid
-
-## Example
-
-```javascript
-// Example usage
-const tokens = {
-  "color": {
-    "primary": { "value": "#0066CC", "type": "color" },
-    "secondary": { "value": "#FF6347", "type": "color" },
-    "accent": { "value": "#FFD700", "type": "color" }
-  }
-};
-
-onSavePalettes(tokens);
-```
+1. Open Penpot and go to your workspace
+2. Click on the "Plugins" icon in the sidebar
+3. Search for "Color Tokens" in the plugins marketplace
+4. Click "Install" to add the plugin to your workspace
+5. The plugin will appear in your plugins panel, ready to use
 
 ## License
 

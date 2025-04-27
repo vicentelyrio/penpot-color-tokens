@@ -30,7 +30,3 @@ An opinionated color palette generator plugin for Penpot that helps you create b
 ## Screenshots
 ![Penpot Color Tokens](https://raw.githubusercontent.com/vicentelyrio/penpot-color-tokens/refs/heads/main/public/image-01.png)
 ![Penpot Color Tokens](https://raw.githubusercontent.com/vicentelyrio/penpot-color-tokens/refs/heads/main/public/image-02.png)
-
-## License
-
-MIT

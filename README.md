@@ -22,10 +22,9 @@ An opinionated color palette generator plugin for Penpot that helps you create b
 ## Installation
 
 1. Open Penpot and go to your workspace
-2. Click on the "Plugins" icon in the sidebar
-3. Search for "Color Tokens" in the plugins marketplace
-4. Click "Install" to add the plugin to your workspace
-5. The plugin will appear in your plugins panel, ready to use
+2. Click on the "Plugins" icon in the toolbar
+3. Paste the manfiest url `https://penpot-color-tokens.netlify.app/manifest.json`
+4. Click "Install"
 
 ## Screenshots
 ![Penpot Color Tokens](https://raw.githubusercontent.com/vicentelyrio/penpot-color-tokens/refs/heads/main/public/image-01.png)

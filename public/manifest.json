@@ -2,6 +2,7 @@
   "name": "Penpot Color Tokens",
   "code": "./plugin.js",
   "description": "Generate color palettes with a opinionated format",
+  "icon": "./icon.png",
   "permissions": [
     "content:read",
     "content:write",

@@ -1,4 +1,9 @@
-export function parseColors(palettes: Palette[], tints: boolean, shades: boolean) {
+export function parseColors(
+  palettes: Palette[],
+  tints: boolean,
+  shades: boolean,
+  delimiter: Delimiter
+) {
   return palettes.reduce<Record<string, ColorToken>>((acc, palette) => {
     const baseColorIndex = palette.colors.findIndex(c => c === palette.color)
     let paletteObj: Record<string, ColorToken> = {}
@@ -7,7 +12,7 @@ export function parseColors(palettes: Palette[], tints: boolean, shades: boolean
       if (tints && shades) {
         if (i <= baseColorIndex) {
           const step = (i + 1) * 100
-          const key = `${palette.name}-pale-${step}`
+          const key = `${palette.name}${delimiter}pale${delimiter}${step}`
           paletteObj[key] = {
             $type: 'color',
             $value: color
@@ -16,7 +21,7 @@ export function parseColors(palettes: Palette[], tints: boolean, shades: boolean
 
         if (i >= baseColorIndex) {
           const step = (i - baseColorIndex + 1) * 100
-          const key = `${palette.name}-shade-${step}`
+          const key = `${palette.name}${delimiter}shade${delimiter}${step}`
           paletteObj[key] = {
             $type: 'color',
             $value: color
@@ -25,7 +30,7 @@ export function parseColors(palettes: Palette[], tints: boolean, shades: boolean
       }
       else {
         const step = (i + 1) * 100
-        const key = `${palette.name}-${step}`
+        const key = `${palette.name}${delimiter}${step}`
         paletteObj[key] = {
           $type: 'color',
           $value: color

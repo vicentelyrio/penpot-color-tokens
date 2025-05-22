@@ -9,6 +9,7 @@ export type UseGenerateProps = {
   palettes: Palette[]
   shades: boolean
   tints: boolean
+  delimiter: Delimiter
   jsonMode: boolean
   libraryMode: boolean
   visualPaletteMode: boolean
@@ -19,9 +20,11 @@ export function useGenerate({
   shades,
   tints,
   jsonMode,
+  delimiter,
   libraryMode,
   visualPaletteMode
 }: UseGenerateProps) {
+  const [errors, setErrors] = useState(false)
   const [isGenerating, setIsGenerating] = useState(false)
   const [isExporting, setIsExporting] = useState(false)
   const [isCreating, setIsCreating] = useState(false)
@@ -96,8 +99,13 @@ export function useGenerate({
     }
   }, [])
 
+  useEffect(() => {
+    const hasError = Object.values(palettes).some(({ name }) => !name)
+    setErrors(hasError)
+  }, [palettes])
+
   function onGeneratePalettes() {
-    const tokenData = parseColors(palettes, tints, shades)
+    const tokenData = parseColors(palettes, tints, shades, delimiter)
 
     if (libraryMode) {
       setIsGenerating(true)
@@ -134,6 +142,7 @@ export function useGenerate({
     isGenerating,
     isExporting,
     isCreating,
+    errors,
     generationResult,
     exportResult,
     onGeneratePalettes,

@@ -3,16 +3,15 @@
   flex: 1 1 auto;
   display: flex;
   flex-flow: column nowrap;
-  align-items: flex-start;
+  align-items: stretch;
   overflow: auto;
   gap: var(--spacing-8);
-  padding-right: var(--spacing-16);
 }
 
 .colorRow {
   background: var(--background-tertiary);
   border-radius: var(--spacing-12);
-  width: 100%;
+  max-width: 100%;
   display: flex;
   flex-flow: row wrap;
   flex: 0 0 auto;
@@ -20,6 +19,10 @@
   align-items: center;
   padding: var(--spacing-12);
   position: relative;
+}
+
+.colorRowMultiple {
+  padding-right: var(--spacing-48);
 }
 
 .colorsSegment {
@@ -81,7 +84,7 @@ input[type="color"]::-moz-color-swatch {
   cursor: pointer;
   position: absolute;
   top: var(--spacing-8);
-  right: calc(var(--spacing-12) * -1);
+  right: var(--spacing-8);
   padding: 0;
   margin: auto;
 }

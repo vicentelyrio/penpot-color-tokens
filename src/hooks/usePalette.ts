@@ -4,13 +4,12 @@ import { useEffect, useState } from 'preact/hooks'
 import { buildPalette } from '@utils/buildPalette'
 
 import {
-  DEFAULT_PALETTE_NAME,
   DEFAULT_PALETTE_COLOR,
   DEFAULT_STEPS
 } from '@consts/config'
 
 const defaultPalette = {
-  name: DEFAULT_PALETTE_NAME,
+  name: '',
   color: DEFAULT_PALETTE_COLOR,
   colors: buildPalette({
     color: DEFAULT_PALETTE_COLOR,

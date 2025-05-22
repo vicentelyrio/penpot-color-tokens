@@ -34,12 +34,15 @@ export function App() {
     libraryMode,
     jsonMode,
     visualPaletteMode,
+    delimiter,
     setLibraryMode,
     setJsonMode,
     setVisualPaletteMode,
+    setDelimiter,
   } = useGenerateOptions()
 
   const {
+    errors,
     isGenerating,
     isExporting,
     isCreating,
@@ -52,6 +55,7 @@ export function App() {
     tints,
     jsonMode,
     libraryMode,
+    delimiter,
     visualPaletteMode
   })
 
@@ -105,12 +109,15 @@ export function App() {
 
       <Toaster toasts={toasts} onRemove={removeToast} />
       <Footer
+        hasError={errors}
         libraryMode={libraryMode}
         jsonMode={jsonMode}
         visualPaletteMode={visualPaletteMode}
+        delimiter={delimiter}
         setLibraryMode={setLibraryMode}
         setJsonMode={setJsonMode}
         setVisualPaletteMode={setVisualPaletteMode}
+        setDelimiter={setDelimiter}
         onSavePalettes={onGeneratePalettes}
       />
     </div>

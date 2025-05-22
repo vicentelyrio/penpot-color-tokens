@@ -43,3 +43,5 @@ type Message = {
   tokens?: Record<string, { $type: string; $value: string }>
   content?: any
 }
+
+type Delimiter = '.' | '-'

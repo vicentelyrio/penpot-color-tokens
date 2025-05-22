@@ -23,7 +23,7 @@ export function Actions({
   return (
     <div className={classes.actions}>
       <div className={classes.options}>
-        <div class="checkbox-container">
+        <div className={clsx(['form-group', 'checkbox-container'])}>
           <input
             className="checkbox-input"
             type="checkbox"
@@ -33,7 +33,7 @@ export function Actions({
           />
           <label for="tints" className="code-font">Tints</label>
         </div>
-        <div class="checkbox-container">
+        <div className={clsx(['form-group', 'checkbox-container'])}>
           <input
             className="checkbox-input"
             type="checkbox"

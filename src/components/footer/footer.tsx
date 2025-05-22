@@ -50,7 +50,7 @@ export function Footer({
             onChange={() => setVisualPaletteMode(!visualPaletteMode)}
           />
           <label for="visualPaletteMode" className="code-font">Add components</label>
-          <Help description="Save as a palette component" />
+          <Help description="Save as palette component" />
         </div>
         <div className={clsx(['form-group', 'checkbox-container', classes.fieldset])}>
           <input
@@ -61,7 +61,7 @@ export function Footer({
             onChange={() => setJsonMode(!jsonMode)}
           />
           <label for="jsonMode" className="code-font">Export as JSON</label>
-          <Help description="Save as a JSON file" />
+          <Help description="Save as JSON file" />
         </div>
 
         <div className={clsx(['form-group', 'checkbox-container', classes.fieldset])}>

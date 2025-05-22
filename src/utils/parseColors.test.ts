@@ -9,7 +9,7 @@ describe('parseColors', () => {
       colors: ['#CCCCFF', '#0000FF', '#000099']
     }]
 
-    const result = parseColors(palettes, true, true)
+    const result = parseColors(palettes, true, true, '-')
 
     expect(result).toEqual({
       'blue-pale-100': { $type: 'color', $value: '#CCCCFF' },
@@ -26,7 +26,7 @@ describe('parseColors', () => {
       colors: ['#FFCCCC', '#FF0000', '#990000']
     }]
 
-    const result = parseColors(palettes, false, false)
+    const result = parseColors(palettes, false, false, '-')
 
     expect(result).toEqual({
       'red-100': { $type: 'color', $value: '#FFCCCC' },
@@ -49,7 +49,7 @@ describe('parseColors', () => {
       }
     ]
 
-    const result = parseColors(palettes, true, true)
+    const result = parseColors(palettes, true, true, '-')
 
     expect(result).toEqual({
       'blue-pale-100': { $type: 'color', $value: '#CCCCFF' },
@@ -64,7 +64,7 @@ describe('parseColors', () => {
   })
 
   it('should handle empty palettes array', () => {
-    const result = parseColors([], true, true)
+    const result = parseColors([], true, true, '-')
     expect(result).toEqual({})
   })
 
@@ -75,11 +75,26 @@ describe('parseColors', () => {
       colors: ['#808080']
     }]
 
-    const result = parseColors(palettes, true, true)
+    const result = parseColors(palettes, true, true, '-')
 
     expect(result).toEqual({
       'gray-pale-100': { $type: 'color', $value: '#808080' },
       'gray-shade-100': { $type: 'color', $value: '#808080' }
     })
   })
-}) 
+
+  it('should handle delimiter', () => {
+    const palettes = [{
+      name: 'gray',
+      color: '#808080',
+      colors: ['#808080']
+    }]
+
+    const result = parseColors(palettes, true, true, '.')
+
+    expect(result).toEqual({
+      'gray.pale.100': { $type: 'color', $value: '#808080' },
+      'gray.shade.100': { $type: 'color', $value: '#808080' }
+    })
+  })
+})

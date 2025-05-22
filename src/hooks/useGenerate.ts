@@ -9,6 +9,7 @@ export type UseGenerateProps = {
   palettes: Palette[]
   shades: boolean
   tints: boolean
+  delimiter: Delimiter
   jsonMode: boolean
   libraryMode: boolean
   visualPaletteMode: boolean
@@ -19,6 +20,7 @@ export function useGenerate({
   shades,
   tints,
   jsonMode,
+  delimiter,
   libraryMode,
   visualPaletteMode
 }: UseGenerateProps) {
@@ -97,7 +99,7 @@ export function useGenerate({
   }, [])
 
   function onGeneratePalettes() {
-    const tokenData = parseColors(palettes, tints, shades)
+    const tokenData = parseColors(palettes, tints, shades, delimiter)
 
     if (libraryMode) {
       setIsGenerating(true)

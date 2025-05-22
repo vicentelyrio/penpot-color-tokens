@@ -18,6 +18,7 @@ describe('useGenerate', () => {
     palettes: [{ name: 'Test', color: '#000000', colors: ['#000000'] }],
     shades: true,
     tints: true,
+    delimiter: '-',
     jsonMode: true,
     libraryMode: true,
     visualPaletteMode: true
@@ -46,7 +47,7 @@ describe('useGenerate', () => {
     })
 
     expect(result.current.isGenerating).toBe(true)
-    expect(parseColors).toHaveBeenCalledWith(defaultProps.palettes, true, true)
+    expect(parseColors).toHaveBeenCalledWith(defaultProps.palettes, true, true, '-')
     expect(postMessageSpy).toHaveBeenCalledWith({
       type: MESSAGES.GENERATE_COLOR_LIBRARY,
       tokens: { colors: [] }
@@ -62,7 +63,7 @@ describe('useGenerate', () => {
     })
 
     expect(result.current.isExporting).toBe(true)
-    expect(parseColors).toHaveBeenCalledWith(defaultProps.palettes, true, true)
+    expect(parseColors).toHaveBeenCalledWith(defaultProps.palettes, true, true, '-')
     expect(postMessageSpy).toHaveBeenCalledWith({
       type: MESSAGES.GENERATE_JSON,
       tokens: { colors: [] }
@@ -78,7 +79,7 @@ describe('useGenerate', () => {
     })
 
     expect(result.current.isCreating).toBe(true)
-    expect(parseColors).toHaveBeenCalledWith(defaultProps.palettes, true, true)
+    expect(parseColors).toHaveBeenCalledWith(defaultProps.palettes, true, true, '-')
     expect(postMessageSpy).toHaveBeenCalledWith({
       type: MESSAGES.GENERATE_COMPONENTS,
       tokens: { colors: [] }
@@ -163,4 +164,4 @@ describe('useGenerate', () => {
 
     expect(removeEventListenerSpy).toHaveBeenCalledWith('message', expect.any(Function))
   })
-}) 
+})

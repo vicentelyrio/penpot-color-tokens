@@ -1,5 +1,10 @@
 @import "@penpot/plugin-styles/styles.css";
 
+:root {
+  --spacing-44: calc(var(--spacing-4) * 11);
+  --spacing-48: calc(var(--spacing-4) * 12);
+}
+
 body {
   background-color: var(--background-primary);
   overflow: hidden;
@@ -10,5 +15,6 @@ body {
   min-width: 600px;
   width: 100%;
   height: 100lvh;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 }

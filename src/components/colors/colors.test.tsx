@@ -77,13 +77,14 @@ describe('Colors Component', () => {
       expect(mockSetPalette).toHaveBeenCalledWith('#ff0000', 'crimson', 0)
     })
 
-    it('should not display a remove button for the first palette', () => {
+    it('should not display a remove button', () => {
       render(
         <Color
           palette={mockPalettes[0]}
           onSetPalette={mockSetPalette}
           onRemovePalette={mockRemovePalette}
           index={0}
+          multipleRows={false}
         />
       )
 
@@ -98,6 +99,7 @@ describe('Colors Component', () => {
           onSetPalette={mockSetPalette}
           onRemovePalette={mockRemovePalette}
           index={1}
+          multipleRows
         />
       )
 

@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { renderHook, act } from '@testing-library/preact'
 import { usePalette } from './usePalette'
 import { DEFAULT_PALETTE_NAME, DEFAULT_PALETTE_COLOR, DEFAULT_STEPS } from '@consts/config'
@@ -24,7 +24,7 @@ describe('usePalette', () => {
 
     expect(result.current.palettes).toHaveLength(1)
     expect(result.current.palettes[0]).toEqual({
-      name: DEFAULT_PALETTE_NAME,
+      name: '',
       color: DEFAULT_PALETTE_COLOR,
       colors: [`${DEFAULT_PALETTE_COLOR}-1`, `${DEFAULT_PALETTE_COLOR}-2`]
     })
@@ -39,7 +39,7 @@ describe('usePalette', () => {
 
     expect(result.current.palettes).toHaveLength(2)
     expect(result.current.palettes[1]).toEqual({
-      name: DEFAULT_PALETTE_NAME,
+      name: '',
       color: DEFAULT_PALETTE_COLOR,
       colors: [`${DEFAULT_PALETTE_COLOR}-1`, `${DEFAULT_PALETTE_COLOR}-2`]
     })
@@ -62,7 +62,7 @@ describe('usePalette', () => {
 
     expect(result.current.palettes).toHaveLength(1)
     expect(result.current.palettes[0]).toEqual({
-      name: DEFAULT_PALETTE_NAME,
+      name: '',
       color: DEFAULT_PALETTE_COLOR,
       colors: [`${DEFAULT_PALETTE_COLOR}-1`, `${DEFAULT_PALETTE_COLOR}-2`]
     })
@@ -91,7 +91,7 @@ describe('usePalette', () => {
   })
 
   it('should rebuild palettes when options change', () => {
-    const { result, rerender } = renderHook(
+    const { rerender } = renderHook(
       (props) => usePalette(props),
       { initialProps: defaultProps }
     )
@@ -109,4 +109,4 @@ describe('usePalette', () => {
       ...newProps
     })
   })
-}) 
+})

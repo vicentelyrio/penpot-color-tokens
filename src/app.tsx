@@ -42,6 +42,7 @@ export function App() {
   } = useGenerateOptions()
 
   const {
+    errors,
     isGenerating,
     isExporting,
     isCreating,
@@ -108,6 +109,7 @@ export function App() {
 
       <Toaster toasts={toasts} onRemove={removeToast} />
       <Footer
+        hasError={errors}
         libraryMode={libraryMode}
         jsonMode={jsonMode}
         visualPaletteMode={visualPaletteMode}

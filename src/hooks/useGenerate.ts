@@ -24,6 +24,7 @@ export function useGenerate({
   libraryMode,
   visualPaletteMode
 }: UseGenerateProps) {
+  const [errors, setErrors] = useState(false)
   const [isGenerating, setIsGenerating] = useState(false)
   const [isExporting, setIsExporting] = useState(false)
   const [isCreating, setIsCreating] = useState(false)
@@ -98,6 +99,11 @@ export function useGenerate({
     }
   }, [])
 
+  useEffect(() => {
+    const hasError = Object.values(palettes).some(({ name }) => !name)
+    setErrors(hasError)
+  }, [palettes])
+
   function onGeneratePalettes() {
     const tokenData = parseColors(palettes, tints, shades, delimiter)
 
@@ -136,6 +142,7 @@ export function useGenerate({
     isGenerating,
     isExporting,
     isCreating,
+    errors,
     generationResult,
     exportResult,
     onGeneratePalettes,

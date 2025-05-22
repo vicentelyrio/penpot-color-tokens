@@ -18,6 +18,7 @@ export function Colors({ palettes, onSetPalette, onRemovePalette }: ColorsProps)
           onSetPalette={onSetPalette}
           onRemovePalette={onRemovePalette}
           index={i}
+          multipleRows={palettes.length > 1}
         />
       ))}
     </div>
@@ -29,16 +30,18 @@ export type ColorProps = {
   onSetPalette: (color: string, name: string, index: number) => void
   onRemovePalette: (index: number) => void
   index: number
+  multipleRows: boolean
 }
 
 export function Color({
   index,
   palette,
+  multipleRows,
   onSetPalette,
   onRemovePalette,
 }: ColorProps) {
   return (
-    <div className={classes.colorRow}>
+    <div className={clsx([classes.colorRow, multipleRows ? classes.colorRowMultiple : ''])}>
       <input
         className={classes.colorPicker}
         type="color"
@@ -47,9 +50,10 @@ export function Color({
       />
       <p className={clsx(['code-font', classes.colorLabel])}>{palette.color}</p>
       <input
-        className={clsx(['input', classes.name])}
+        className={clsx(['input', palette.name ? '' : 'error', classes.name])}
         type="text"
         value={palette.name}
+        placeholder="Palette name"
         onChange={(e) => onSetPalette(palette.color, e.currentTarget.value, index)}
       />
       <div className={classes.colorsSegment}>
@@ -61,7 +65,7 @@ export function Color({
           />
         ))}
       </div>
-      {index > 0 && (
+      {multipleRows && (
         <button
           className={classes.removeButton}
           data-appearance="secondary"

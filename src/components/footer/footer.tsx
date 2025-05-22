@@ -6,6 +6,7 @@ export type FooterProps = {
   libraryMode: boolean
   jsonMode: boolean
   visualPaletteMode: boolean
+  hasError: boolean
   delimiter: Delimiter
   setLibraryMode: (mode: boolean) => void
   setJsonMode: (mode: boolean) => void
@@ -18,6 +19,7 @@ export function Footer({
   libraryMode,
   visualPaletteMode,
   jsonMode,
+  hasError,
   delimiter,
   setLibraryMode,
   setVisualPaletteMode,
@@ -77,6 +79,7 @@ export function Footer({
       </div>
       <button
         data-appearance="primary"
+        disabled={hasError}
         onClick={onSavePalettes}>
         Generate
       </button>

@@ -1,15 +1,17 @@
+import { describe, it, expect, vi } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/preact'
 import { Footer } from './footer'
-import { vi } from 'vitest'
 
 describe('Footer Component', () => {
   const mockProps = {
     libraryMode: false,
     jsonMode: false,
     visualPaletteMode: false,
+    delimiter: '-',
     setLibraryMode: vi.fn(),
     setJsonMode: vi.fn(),
     setVisualPaletteMode: vi.fn(),
+    setDelimiter: vi.fn(),
     onSavePalettes: vi.fn(),
   }
 
@@ -72,4 +74,4 @@ describe('Footer Component', () => {
     expect(screen.getByLabelText('Add components')).toBeChecked()
     expect(screen.getByLabelText('Export as JSON')).toBeChecked()
   })
-}) 
+})

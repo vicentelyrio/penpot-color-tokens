@@ -1,5 +1,5 @@
 import { clsx } from '@utils/clsx'
-import { CloseIcon } from '@components/icons/CloseIcon'
+import { CloseIcon } from '@components/icons/close-icon'
 import classes from './colors.module.css'
 
 export type ColorsProps = {

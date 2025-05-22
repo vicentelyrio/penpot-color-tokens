@@ -20,3 +20,10 @@
 .delimiterInput {
   width: calc(var(--spacing-40) * 3);
 }
+
+.fieldset {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: var(--spacing-4);
+  margin-right: var(--spacing-8);
+}

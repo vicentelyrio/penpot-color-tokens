@@ -15,7 +15,9 @@ export function Help({ description }: HelpProps) {
       onMouseEnter={() => setShow(true)}
       onMouseLeave={() => setShow(false)}>
       <span className={clsx(['code-font', classes.label])}>?</span>
-      <div className={clsx([classes.tooltip, show ? classes.show : ''])}>{description}</div>
+      <div className={clsx([classes.tooltip, show ? classes.show : ''])}>
+        <span className="code-font">{description}</span>
+      </div>
     </div>
   )
 }

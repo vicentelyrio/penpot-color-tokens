@@ -48,12 +48,20 @@ function createColorRectangle(
   return elements
 }
 
-function getBaseColorName(colorName: string): string {
-  const match = colorName.match(/^(.*?)(?:-(?:pale|shade))?-\d+$/) || [null, colorName]
+function getBaseColorName(colorName: string) {
+  const match = colorName.match(/^(.*?)(?:[-.](pale|shade))?[-.]\d+$/) || [null, colorName]
   return match[1]
 }
 
-export async function generateComponents(tokenColors: Record<string, ColorToken>): Promise<ExportResult> {
+function getColorTone(colorName: string) {
+  if (colorName.includes('pale')) return 'pale'
+  if (colorName.includes('shade')) return 'shade'
+  return 'base'
+}
+
+export async function generateComponents(
+  tokenColors: Record<string, ColorToken>
+): Promise<ExportResult> {
   const SWATCH_WIDTH = 180
   const SWATCH_HEIGHT = 60
   const PADDING = 20
@@ -67,7 +75,7 @@ export async function generateComponents(tokenColors: Record<string, ColorToken>
         name,
         color: data.$value,
         baseColorName: getBaseColorName(name),
-        type: name.includes('-pale-') ? 'pale' : name.includes('-shade-') ? 'shade' : 'base'
+        type: getColorTone(name)
       }))
 
     if (colors.length === 0) {

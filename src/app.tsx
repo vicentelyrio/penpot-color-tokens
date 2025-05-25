@@ -101,6 +101,7 @@ export function App() {
         palettes={palettes}
         onSetPalette={onSetPalette}
         onRemovePalette={onRemovePalette}
+        errors={errors}
       />
 
       {isCreating && <p className="body-l">Creating Color Components...</p>}
@@ -109,7 +110,7 @@ export function App() {
 
       <Toaster toasts={toasts} onRemove={removeToast} />
       <Footer
-        hasError={errors}
+        hasError={errors.length > 0}
         libraryMode={libraryMode}
         jsonMode={jsonMode}
         visualPaletteMode={visualPaletteMode}

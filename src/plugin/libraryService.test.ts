@@ -46,9 +46,9 @@ describe('libraryService', () => {
   describe('addColorToLibrary', () => {
     it('should add a new color to the library', () => {
       (colorExists as unknown as ReturnType<typeof vi.fn>).mockReturnValue(false)
-      
+
       const result = addColorToLibrary(mockLibrary, 'Red', '#FF0000')
-      
+
       expect(result.success).toBe(true)
       expect(result.colorId).toBe('test-id')
       expect(mockLibrary.createColor).toHaveBeenCalled()
@@ -57,9 +57,9 @@ describe('libraryService', () => {
 
     it('should skip adding existing color', () => {
       (colorExists as unknown as ReturnType<typeof vi.fn>).mockReturnValue(true)
-      
+
       const result = addColorToLibrary(mockLibrary, 'Red', '#FF0000')
-      
+
       expect(result.success).toBe(true)
       expect(result.skipped).toBe(true)
       expect(mockLibrary.createColor).not.toHaveBeenCalled()
@@ -67,10 +67,10 @@ describe('libraryService', () => {
 
     it('should handle custom path', () => {
       (colorExists as unknown as ReturnType<typeof vi.fn>).mockReturnValue(false)
-      
+
       const customPath = 'Colors/Primary'
       const result = addColorToLibrary(mockLibrary, 'Blue', '#0000FF', customPath)
-      
+
       expect(result.success).toBe(true)
       expect(addToColorCache).toHaveBeenCalledWith('Blue', customPath)
     })
@@ -80,9 +80,9 @@ describe('libraryService', () => {
       ;(mockLibrary.createColor as unknown as ReturnType<typeof vi.fn>).mockImplementationOnce(() => {
         throw new Error('Test error')
       })
-      
+
       const result = addColorToLibrary(mockLibrary, 'Red', '#FF0000')
-      
+
       expect(result.success).toBe(false)
       expect(result.error).toBe('Test error')
     })
@@ -113,4 +113,4 @@ describe('libraryService', () => {
       expect(() => getLocalLibrary()).toThrow('Library API not available')
     })
   })
-}) 
+})

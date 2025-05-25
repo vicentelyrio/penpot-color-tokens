@@ -8,7 +8,7 @@ export async function generateColorLibrary(
     const colors = Object.entries(tokenColors)
       .filter(([_, data]) => data.$type === 'color')
       .map(([name, data]) => {
-        const isNested = name.includes('.') || name.includes('/')
+        const isNested = name.includes('/')
         let tokenName = name
         let tokenPath = LIBRARY_NAME
 

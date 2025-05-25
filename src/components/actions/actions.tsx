@@ -49,6 +49,7 @@ export function Actions({
             type="number"
             placeholder="Steps"
             id="steps"
+            min={0}
             value={steps}
             onChange={(e) => setSteps(parseInt(e.currentTarget.value))}
           />
@@ -56,6 +57,7 @@ export function Actions({
         </div>
       </div>
       <button
+        disabled={steps < 0}
         data-appearance="primary"
         onClick={onAddPalette}>
         Add color
@@ -63,4 +65,3 @@ export function Actions({
     </div>
   )
 }
-

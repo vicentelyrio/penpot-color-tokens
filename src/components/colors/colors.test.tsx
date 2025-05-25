@@ -1,6 +1,29 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/preact'
 import { Colors, Color } from './colors'
+import '@testing-library/jest-dom'
+import { h } from 'preact'
+
+// Mock useEyeDropper
+vi.mock('use-eye-dropper', () => ({
+  default: () => ({
+    open: vi.fn(),
+    isSupported: () => false
+  })
+}))
+
+// Mock usehooks-ts
+vi.mock('usehooks-ts', () => ({
+  useOnClickOutside: vi.fn()
+}))
+
+// Mock react-colorful
+vi.mock('react-colorful', () => ({
+  HexColorPicker: ({ onChange }) => h('div', {
+    'data-testid': 'color-picker',
+    onClick: () => onChange('#00ff00')
+  })
+}))
 
 describe('Colors Component', () => {
   const mockPalettes = [
@@ -32,6 +55,7 @@ describe('Colors Component', () => {
           onSetPalette={mockSetPalette}
           onRemovePalette={mockRemovePalette}
           errors={[]}
+          colorType="light"
         />
       )
 
@@ -53,12 +77,14 @@ describe('Colors Component', () => {
           onSetPalette={mockSetPalette}
           onRemovePalette={mockRemovePalette}
           index={0}
-          errors={[]}
+          error={false}
+          colorType="light"
+          multipleRows={false}
         />
       )
 
-      const colorInput = screen.getByDisplayValue('#ff0000')
-      fireEvent.change(colorInput, { target: { value: '#00ff00' } })
+      const colorPicker = screen.getByTestId('color-picker')
+      fireEvent.click(colorPicker)
 
       expect(mockSetPalette).toHaveBeenCalledWith('#00ff00', 'red', 0)
     })
@@ -70,7 +96,9 @@ describe('Colors Component', () => {
           onSetPalette={mockSetPalette}
           onRemovePalette={mockRemovePalette}
           index={0}
-          errors={[]}
+          error={false}
+          colorType="light"
+          multipleRows={false}
         />
       )
 
@@ -87,8 +115,9 @@ describe('Colors Component', () => {
           onSetPalette={mockSetPalette}
           onRemovePalette={mockRemovePalette}
           index={0}
+          error={false}
+          colorType="light"
           multipleRows={false}
-          errors={[]}
         />
       )
 
@@ -103,8 +132,9 @@ describe('Colors Component', () => {
           onSetPalette={mockSetPalette}
           onRemovePalette={mockRemovePalette}
           index={1}
-          multipleRows
-          errors={[]}
+          error={false}
+          colorType="light"
+          multipleRows={true}
         />
       )
 

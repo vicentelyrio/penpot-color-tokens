@@ -5,6 +5,7 @@ import {
 } from '@components/segment-control/segment-control'
 
 import { CircleIcon } from '@components/icons/circle'
+import { PaletteIcon } from '@components/icons/palette'
 import { SquareIcon } from '@components/icons/square'
 
 import classes from './actions.module.css'
@@ -33,7 +34,7 @@ export function Actions({
   onAddPalette,
 }: ActionsProps) {
   const items: SegmentControlItem[] = [
-    { item: <CircleIcon />, type: 'segment' },
+    { item: <PaletteIcon />, type: 'segment' },
     { item: <SquareIcon />, type: 'square' },
     { item: <CircleIcon />, type: 'circle' },
   ]

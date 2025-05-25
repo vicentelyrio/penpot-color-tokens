@@ -67,7 +67,13 @@
   }
 
   &.current {
-    box-shadow: var(--box-shadow-1), var(--accent-primary) 0 0 0 2px;
+    box-shadow: var(--accent-primary) 0 0 0 2px;
+    border-radius: var(--spacing-4);
+    z-index: 1;
+    position: relative;
+  }
+  &.circle.current {
+    border-radius: 50%;
   }
 }
 
@@ -102,6 +108,7 @@
   background: var(--background-tertiary);
   border-radius: 50%;
   position: fixed;
+  margin-top: 60px;
   left: 40px;
   display: none;
   padding: var(--spacing-8);

@@ -7,6 +7,7 @@ import classes from './colors.module.css'
 import { CloseIcon } from '@components/icons/close'
 import { EyedropperIcon } from '@components/icons/eyedropper'
 import useEyeDropper from 'use-eye-dropper'
+import { HexColorPicker } from 'react-colorful'
 
 export type ColorsProps = {
   palettes: Palette[]
@@ -89,11 +90,9 @@ export function Color({
       <div
         ref={ref}
         className={clsx([classes.colorWheel, showWheel ? classes.showWheel : ''])}>
-        <Wheel
+        <HexColorPicker
           color={palette.color}
-          onChange={(color) => onSetPalette(color.hex, palette.name, index)}
-          width={128}
-          height={128}
+          onChange={(color) => onSetPalette(color, palette.name, index)}
         />
       </div>
       {isSupported() && (

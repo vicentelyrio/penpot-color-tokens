@@ -18,9 +18,11 @@ export function App() {
     steps,
     tints,
     shades,
+    colorType,
     setSteps,
     setTints,
     setShades,
+    setColorType,
   } = usePaletteOptions()
 
   const {
@@ -91,9 +93,11 @@ export function App() {
         tints={tints}
         shades={shades}
         steps={steps}
+        colorType={colorType}
         setTints={setTints}
         setShades={setShades}
         setSteps={setSteps}
+        setColorType={setColorType}
         onAddPalette={onAddPalette}
       />
 
@@ -101,6 +105,8 @@ export function App() {
         palettes={palettes}
         onSetPalette={onSetPalette}
         onRemovePalette={onRemovePalette}
+        errors={errors}
+        colorType={colorType}
       />
 
       {isCreating && <p className="body-l">Creating Color Components...</p>}
@@ -109,7 +115,7 @@ export function App() {
 
       <Toaster toasts={toasts} onRemove={removeToast} />
       <Footer
-        hasError={errors}
+        hasError={errors.length > 0}
         libraryMode={libraryMode}
         jsonMode={jsonMode}
         visualPaletteMode={visualPaletteMode}

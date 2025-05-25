@@ -31,6 +31,7 @@ describe('Colors Component', () => {
           palettes={mockPalettes}
           onSetPalette={mockSetPalette}
           onRemovePalette={mockRemovePalette}
+          errors={[]}
         />
       )
 
@@ -52,6 +53,7 @@ describe('Colors Component', () => {
           onSetPalette={mockSetPalette}
           onRemovePalette={mockRemovePalette}
           index={0}
+          errors={[]}
         />
       )
 
@@ -68,6 +70,7 @@ describe('Colors Component', () => {
           onSetPalette={mockSetPalette}
           onRemovePalette={mockRemovePalette}
           index={0}
+          errors={[]}
         />
       )
 
@@ -85,6 +88,7 @@ describe('Colors Component', () => {
           onRemovePalette={mockRemovePalette}
           index={0}
           multipleRows={false}
+          errors={[]}
         />
       )
 
@@ -100,6 +104,7 @@ describe('Colors Component', () => {
           onRemovePalette={mockRemovePalette}
           index={1}
           multipleRows
+          errors={[]}
         />
       )
 

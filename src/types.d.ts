@@ -45,3 +45,4 @@ type Message = {
 }
 
 type Delimiter = '.' | '-'
+type ColorType = 'segment' | 'square' | 'circle'

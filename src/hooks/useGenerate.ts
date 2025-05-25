@@ -24,7 +24,7 @@ export function useGenerate({
   libraryMode,
   visualPaletteMode
 }: UseGenerateProps) {
-  const [errors, setErrors] = useState(false)
+  const [errors, setErrors] = useState<number[]>([])
   const [isGenerating, setIsGenerating] = useState(false)
   const [isExporting, setIsExporting] = useState(false)
   const [isCreating, setIsCreating] = useState(false)
@@ -100,8 +100,12 @@ export function useGenerate({
   }, [])
 
   useEffect(() => {
-    const hasError = Object.values(palettes).some(({ name }) => !name)
-    setErrors(hasError)
+    const list = Object.values(palettes).map(({ name }) => name)
+    const errorIndexes = list.reduce((acc, name, index) => {
+      if (!name || list.indexOf(name) != index) acc.push(index)
+      return acc
+    }, [] as number[])
+    setErrors(errorIndexes)
   }, [palettes])
 
   function onGeneratePalettes() {

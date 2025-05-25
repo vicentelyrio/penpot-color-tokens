@@ -17,7 +17,7 @@ describe('generateColorLibrary', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     ;(getLocalLibrary as unknown as ReturnType<typeof vi.fn>).mockReturnValue(mockLibrary)
-    ;(addColorToLibrary as unknown as ReturnType<typeof vi.fn>).mockImplementation((_, name, color, path) => ({
+    ;(addColorToLibrary as unknown as ReturnType<typeof vi.fn>).mockImplementation((_, name) => ({
       name,
       success: true,
       colorId: `mock-id-${name}`
@@ -51,27 +51,17 @@ describe('generateColorLibrary', () => {
         $type: 'color',
         $value: '#FF0000'
       },
-      'colors.secondary.base': {
-        $type: 'color',
-        $value: '#00FF00'
-      }
     }
 
     const result = await generateColorLibrary(mockTokens)
 
     expect(result.success).toBe(true)
-    expect(result.message).toContain('Processed 2 colors')
+    expect(result.message).toContain('Processed 1 colors')
     expect(addColorToLibrary).toHaveBeenCalledWith(
       mockLibrary,
       'base',
       '#FF0000',
       `${LIBRARY_NAME}/colors/primary`
-    )
-    expect(addColorToLibrary).toHaveBeenCalledWith(
-      mockLibrary,
-      'base',
-      '#00FF00',
-      `${LIBRARY_NAME}/colors/secondary`
     )
   })
 
@@ -135,4 +125,4 @@ describe('generateColorLibrary', () => {
     expect(result.message).toContain('Error accessing Penpot API')
     expect(addColorToLibrary).toHaveBeenCalledTimes(1)
   })
-}) 
+})

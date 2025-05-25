@@ -15,6 +15,7 @@ const baseConfig = {
   ],
   resolve: {
     alias: [
+      { find: '@assets', replacement: pathResolver('assets') },
       { find: '@consts', replacement: pathResolver('consts') },
       { find: '@components', replacement: pathResolver('components') },
       { find: '@hooks', replacement: pathResolver('hooks') },
@@ -24,6 +25,11 @@ const baseConfig = {
   },
   preview: {
     port: 4400,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+      'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
+    }
   },
   server: {
     port: 4400,

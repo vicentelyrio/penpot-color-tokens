@@ -1,7 +1,6 @@
 import { useCallback, useRef, useState } from 'preact/hooks'
 import { useOnClickOutside } from 'usehooks-ts'
 import { clsx } from '@utils/clsx'
-import Wheel from '@uiw/react-color-wheel'
 import classes from './colors.module.css'
 
 import { CloseIcon } from '@components/icons/close'

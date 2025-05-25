@@ -15,7 +15,7 @@
   display: flex;
   flex-flow: row wrap;
   flex: 0 0 auto;
-  gap: var(--spacing-12);
+  gap: var(--spacing-20);
   align-items: center;
   padding: var(--spacing-12);
   position: relative;
@@ -29,62 +29,93 @@
   max-width: 100%;
   display: flex;
   flex-flow: row wrap;
-  gap: var(--spacing-8);
   align-items: center;
+  gap: var(--spacing-4);
+
+  &.segment {
+    gap: 0;
+  }
 }
 
 .colorLabel {
-  width: 70px;
+  width: 50px;
 }
 
-input[type="color"] {
-  border: var(--background-secondary) var(--spacing-4) solid;
-  border-radius: 50%;
-  inline-size: 30px;
-  block-size: 30px;
-  padding: 1px;
-}
-
-input[type="color"]::-webkit-color-swatch-wrapper {
-  padding: 0;
-}
-
-input[type="color"]::-webkit-color-swatch {
-  border-radius: 50%;
-}
-
-input[type="color"]::-moz-color-swatch {
-  border-radius: 50%;
-}
-
-.name {
+.colorName {
   border-color: var(--background-primary);
+  background: var(--background-primary)!important;
 }
 
 .color {
-  border: 2px solid var(--background-secondary);
-  border-radius: var(--spacing-4);
-  width: var(--spacing-24);
-  height: var(--spacing-24);
+  &.segment {
+    width: var(--spacing-32);
+    height: var(--spacing-32);
+  }
+
+  &.square {
+    box-shadow: var(--box-shadow-1);
+    border-radius: var(--spacing-4);
+    width: var(--spacing-28);
+    height: var(--spacing-28);
+  }
+
+  &.circle {
+    box-shadow: var(--box-shadow-1);
+    border-radius: 50%;
+    width: var(--spacing-28);
+    height: var(--spacing-28);
+  }
+
+  &.current {
+    box-shadow: var(--box-shadow-1), var(--accent-primary) 0 0 0 2px;
+  }
 }
 
-.current {
-  border-color: var(--accent-tertiary);
+.colorPicker {
+  border-radius: var(--spacing-4);
+  border: var(--foreground-secondary) 1px solid;
+  box-shadow: var(--box-shadow-2);
+  border-radius: 50%;
+  width: var(--spacing-24);
+  height: var(--spacing-24);
+  cursor: pointer;
 }
 
 .removeButton {
+  background: var(--background-secondary);
+  border: var(--background-tertiary) var(--spacing-4) solid;
   border-radius: 50%;
   width: var(--spacing-40);
   height: var(--spacing-40);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--background-secondary);
-  border: var(--background-tertiary) var(--spacing-4) solid;
   cursor: pointer;
   position: absolute;
   top: var(--spacing-8);
   right: var(--spacing-8);
-  padding: 0;
+  padding: var(--spacing-8);
   margin: auto;
+}
+
+.colorWheel {
+  background: var(--background-tertiary);
+  border-radius: 50%;
+  position: fixed;
+  left: 40px;
+  display: none;
+  padding: var(--spacing-8);
+}
+
+.showWheel {
+  display: block;
+  z-index: 100;
+}
+
+.eyedropperIcon {
+  cursor: pointer;
+
+  &:hover {
+    fill: var(--accent-primary);
+  }
 }

@@ -18,14 +18,21 @@
     "@penpot/plugin-styles": "^1.2.0",
     "@penpot/plugin-types": "^1.2.0",
     "@skinnypete/color": "^1.0.3",
+    "@uiw/react-color-wheel": "^2.5.5",
     "preact": "^10.26.4",
-    "react-fast-compare": "^3.2.2"
+    "react-fast-compare": "^3.2.2",
+    "use-eye-dropper": "^1.7.1",
+    "usehooks-ts": "^3.1.1"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.10.1",
+    "@svgr/rollup": "^8.1.0",
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/preact": "^3.2.3",
+    "autoprefixer": "^10.4.21",
     "happy-dom": "^13.8.2",
+    "postcss": "^8.5.3",
+    "postcss-nested": "^7.0.2",
     "typescript": "~5.7.2",
     "vite": "^6.3.1",
     "vite-live-preview": "^0.3.2",

@@ -1,0 +1,22 @@
+.segmentControl {
+  background: var(--background-secondary);
+  border-radius: var(--spacing-4);
+  display: flex;
+  flex: 1 1 auto;
+  flex-flow: row nowrap;
+  gap: var(--spacing-4);
+  padding: var(--spacing-2);
+}
+
+.segmentControlItem {
+  background: var(--background-tertiary);
+  border-radius: var(--spacing-4);
+  padding: 0 var(--spacing-16);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  &.selected {
+    background: var(--background-primary);
+  }
+}

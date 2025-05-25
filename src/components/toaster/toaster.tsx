@@ -1,6 +1,7 @@
 import { useEffect } from 'preact/hooks'
 import { clsx } from '@utils/clsx'
-import { CloseIcon } from '@components/icons/close-icon'
+
+import { CloseIcon } from '@components/icons/close'
 import classes from './toaster.module.css'
 
 export type ToastType = 'success' | 'error' | 'warning' | 'info'

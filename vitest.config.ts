@@ -17,11 +17,12 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
-      '@utils': resolve(__dirname, './src/utils'),
+      '@assets': resolve(__dirname, './src/assets'),
       '@consts': resolve(__dirname, './src/consts'),
       '@components': resolve(__dirname, './src/components'),
-      '@plugin': resolve(__dirname, './src/plugin'),
       '@hooks': resolve(__dirname, './src/hooks'),
+      '@plugin': resolve(__dirname, './src/plugin'),
+      '@utils': resolve(__dirname, './src/utils'),
       '@penpot/plugin-styles': resolve(__dirname, './src/test/mocks/pluginStyles.ts'),
       '@penpot/plugin-types': resolve(__dirname, './src/test/mocks/pluginTypes.ts')
     }

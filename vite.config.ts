@@ -15,6 +15,7 @@ const baseConfig = {
   ],
   resolve: {
     alias: [
+      { find: '@assets', replacement: pathResolver('assets') },
       { find: '@consts', replacement: pathResolver('consts') },
       { find: '@components', replacement: pathResolver('components') },
       { find: '@hooks', replacement: pathResolver('hooks') },

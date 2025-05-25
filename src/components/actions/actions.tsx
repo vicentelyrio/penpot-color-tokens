@@ -1,13 +1,23 @@
 import { clsx } from '@utils/clsx'
+import {
+  SegmentControl,
+  type SegmentControlItem
+} from '@components/segment-control/segment-control'
+
+import { CircleIcon } from '@components/icons/circle'
+import { SquareIcon } from '@components/icons/square'
+
 import classes from './actions.module.css'
 
 export type ActionsProps = {
   tints: boolean
   shades: boolean
   steps: number
+  colorType: ColorType
   setTints: (tints: boolean) => void
   setShades: (shades: boolean) => void
   setSteps: (steps: number) => void
+  setColorType: (colorType: ColorType) => void
   onAddPalette: () => void
 }
 
@@ -15,11 +25,19 @@ export function Actions({
   tints,
   shades,
   steps,
+  colorType,
   setTints,
   setShades,
   setSteps,
+  setColorType,
   onAddPalette,
 }: ActionsProps) {
+  const items: SegmentControlItem[] = [
+    { item: <CircleIcon />, type: 'segment' },
+    { item: <SquareIcon />, type: 'square' },
+    { item: <CircleIcon />, type: 'circle' },
+  ]
+
   return (
     <div className={classes.actions}>
       <div className={classes.options}>
@@ -56,12 +74,19 @@ export function Actions({
           <label className="code-font" for="steps">Steps</label>
         </div>
       </div>
-      <button
-        disabled={steps < 0}
-        data-appearance="primary"
-        onClick={onAddPalette}>
-        Add color
-      </button>
+      <div className={classes.confirm}>
+        <SegmentControl
+          colorType={colorType}
+          setColorType={setColorType}
+          items={items}
+        />
+        <button
+          disabled={steps < 0}
+          data-appearance="primary"
+          onClick={onAddPalette}>
+          Add color
+        </button>
+      </div>
     </div>
   )
 }

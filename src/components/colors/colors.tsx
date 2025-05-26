@@ -1,16 +1,17 @@
 import { useCallback, useRef, useState } from 'preact/hooks'
 import { useOnClickOutside } from 'usehooks-ts'
-import { clsx } from '@utils/clsx'
-import classes from './colors.module.css'
-
-import { CloseIcon } from '@components/icons/close'
-import { EyedropperIcon } from '@components/icons/eyedropper'
 import useEyeDropper from 'use-eye-dropper'
 import { HexColorPicker } from 'react-colorful'
 
+import { clsx } from '@utils/clsx'
+import { CloseIcon } from '@components/icons/close'
+import { EyedropperIcon } from '@components/icons/eyedropper'
+
+import classes from './colors.module.css'
+
 export type ColorsProps = {
   palettes: Palette[]
-  errors: number[]
+  errors: Record<string, number[]>
   colorType: ColorType
   onSetPalette: (color: string, name: string, index: number) => void
   onRemovePalette: (index: number) => void
@@ -31,7 +32,7 @@ export function Colors({
           palette={palette}
           onSetPalette={onSetPalette}
           onRemovePalette={onRemovePalette}
-          error={errors.includes(i)}
+          errors={errors}
           colorType={colorType}
           index={i}
           multipleRows={palettes.length > 1}
@@ -48,13 +49,13 @@ export type ColorProps = {
   colorType: ColorType
   index: number
   multipleRows: boolean
-  error: boolean
+  errors: Record<string, number[]>
 }
 
 export function Color({
   index,
   palette,
-  error,
+  errors,
   colorType,
   multipleRows,
   onSetPalette,
@@ -75,6 +76,10 @@ export function Color({
     }
     openPicker()
   }, [open])
+
+  console.log(errors)
+  const nameError = palette.name && !errors['name']?.includes(index) ? '' : 'error'
+  const colorError = palette.color && !errors['color']?.includes(index) ? '' : 'error'
 
   return (
     <div className={clsx([classes.colorRow, multipleRows ? classes.colorRowMultiple : ''])}>
@@ -100,9 +105,15 @@ export function Color({
           onClick={() => pickColor(palette.name, index)}
         />
       )}
-      <p className={clsx(['code-font', classes.colorLabel])}>{palette.color}</p>
       <input
-        className={clsx(['input', palette.name && !error ? '' : 'error', classes.colorName])}
+        className={clsx(['input', classes.inputColor, colorError])}
+        type="text"
+        value={palette.color}
+        placeholder="Palette color"
+        onChange={(e) => onSetPalette(e.currentTarget.value, palette.name, index)}
+      />
+      <input
+        className={clsx(['input', classes.inputName, nameError])}
         type="text"
         value={palette.name}
         placeholder="Palette name"

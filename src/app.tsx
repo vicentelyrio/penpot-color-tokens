@@ -115,7 +115,7 @@ export function App() {
 
       <Toaster toasts={toasts} onRemove={removeToast} />
       <Footer
-        hasError={errors.length > 0}
+        hasError={Object.values(errors).length > 0}
         libraryMode={libraryMode}
         jsonMode={jsonMode}
         visualPaletteMode={visualPaletteMode}

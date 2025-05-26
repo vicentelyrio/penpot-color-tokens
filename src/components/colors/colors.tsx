@@ -77,7 +77,6 @@ export function Color({
     openPicker()
   }, [open])
 
-  console.log(errors)
   const nameError = palette.name && !errors['name']?.includes(index) ? '' : 'error'
   const colorError = palette.color && !errors['color']?.includes(index) ? '' : 'error'
 

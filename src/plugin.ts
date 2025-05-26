@@ -8,7 +8,7 @@ import {
 } from '@plugin/messages'
 
 penpot.ui.open(LIBRARY_NAME, `./index.html?theme=${penpot.theme}`, {
-  width: 970,
+  width: 980,
   height: 600,
 })
 

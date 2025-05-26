@@ -15,7 +15,7 @@
   display: flex;
   flex-flow: row wrap;
   flex: 0 0 auto;
-  gap: var(--spacing-20);
+  gap: var(--spacing-16);
   align-items: center;
   padding: var(--spacing-12);
   position: relative;
@@ -37,13 +37,11 @@
   }
 }
 
-.colorLabel {
-  width: 50px;
-}
-
-.colorName {
+.inputName,
+.inputColor{
   border-color: var(--background-primary);
   background: var(--background-primary)!important;
+  width: calc(var(--spacing-40) * 3);
 }
 
 .color {

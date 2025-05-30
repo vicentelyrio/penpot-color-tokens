@@ -14,10 +14,10 @@ describe('color utilities', () => {
       const tint3 = tint(color, 2, 4) // 60% tint
       const tint4 = tint(color, 3, 4) // 80% tint
 
-      expect(tint1.toLowerCase()).toBe('#ff3333')
-      expect(tint2.toLowerCase()).toBe('#ff6666')
-      expect(tint3.toLowerCase()).toBe('#ff9999')
-      expect(tint4.toLowerCase()).toBe('#ffcccc')
+      expect(tint1.toLowerCase()).toBe('#fd3a3b')
+      expect(tint2.toLowerCase()).toBe('#fc6666')
+      expect(tint3.toLowerCase()).toBe('#fb8d8d')
+      expect(tint4.toLowerCase()).toBe('#fab1b2')
     })
   })
 
@@ -33,10 +33,10 @@ describe('color utilities', () => {
       const shade3 = shade(color, 2, 4) // 60% shade
       const shade4 = shade(color, 3, 4) // 80% shade
 
-      expect(shade1.toLowerCase()).toBe('#cc0000')
-      expect(shade2.toLowerCase()).toBe('#990000')
-      expect(shade3.toLowerCase()).toBe('#660000')
-      expect(shade4.toLowerCase()).toBe('#330000')
+      expect(shade1.toLowerCase()).toBe('#d20000')
+      expect(shade2.toLowerCase()).toBe('#ab0000')
+      expect(shade3.toLowerCase()).toBe('#860000')
+      expect(shade4.toLowerCase()).toBe('#630000')
     })
   })
 })

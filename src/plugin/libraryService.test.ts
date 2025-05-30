@@ -2,7 +2,6 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { addColorToLibrary, isLibraryAvailable, getLocalLibrary, PenpotLibrary } from './libraryService'
 import { LIBRARY_NAME } from '@consts/config'
 
-// Extend globalThis with penpot property
 const globalThisWithPenpot = globalThis as typeof globalThis & {
   penpot: {
     library?: {

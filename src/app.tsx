@@ -1,5 +1,7 @@
 import { useEffect } from 'preact/hooks'
 
+import { PostHogProvider} from 'posthog-js/react'
+
 import { Actions } from '@components/actions/actions'
 import { Colors } from '@components/colors/colors'
 import { Toaster } from '@components/toaster/toaster'
@@ -12,6 +14,10 @@ import { useGenerateOptions } from '@hooks/useGenerateOptions'
 import { useGenerate } from '@hooks/useGenerate'
 
 import classes from './app.module.css'
+
+const options = {
+  api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
+}
 
 export function App() {
   const {
@@ -88,44 +94,48 @@ export function App() {
   }, [isExporting, exportResult, showToast])
 
   return (
-    <div className={classes.workspace}>
-      <Actions
-        tints={tints}
-        shades={shades}
-        steps={steps}
-        colorType={colorType}
-        setTints={setTints}
-        setShades={setShades}
-        setSteps={setSteps}
-        setColorType={setColorType}
-        onAddPalette={onAddPalette}
-      />
+    <PostHogProvider
+      apiKey={import.meta.env.VITE_PUBLIC_POSTHOG_KEY}
+      options={options}>
+        <div className={classes.workspace}>
+          <Actions
+            tints={tints}
+            shades={shades}
+            steps={steps}
+            colorType={colorType}
+            setTints={setTints}
+            setShades={setShades}
+            setSteps={setSteps}
+            setColorType={setColorType}
+            onAddPalette={onAddPalette}
+          />
 
-      <Colors
-        palettes={palettes}
-        onSetPalette={onSetPalette}
-        onRemovePalette={onRemovePalette}
-        errors={errors}
-        colorType={colorType}
-      />
+          <Colors
+            palettes={palettes}
+            onSetPalette={onSetPalette}
+            onRemovePalette={onRemovePalette}
+            errors={errors}
+            colorType={colorType}
+          />
 
-      {isCreating && <p className="body-l">Creating Color Components...</p>}
-      {isGenerating && <p className="body-l">Creating Colors...</p>}
-      {isExporting && <p className="body-l">Exporting JSON...</p>}
+          {isCreating && <p className="body-l">Creating Color Components...</p>}
+          {isGenerating && <p className="body-l">Creating Colors...</p>}
+          {isExporting && <p className="body-l">Exporting JSON...</p>}
 
-      <Toaster toasts={toasts} onRemove={removeToast} />
-      <Footer
-        hasError={Object.values(errors).length > 0}
-        libraryMode={libraryMode}
-        jsonMode={jsonMode}
-        visualPaletteMode={visualPaletteMode}
-        delimiter={delimiter}
-        setLibraryMode={setLibraryMode}
-        setJsonMode={setJsonMode}
-        setVisualPaletteMode={setVisualPaletteMode}
-        setDelimiter={setDelimiter}
-        onSavePalettes={onGeneratePalettes}
-      />
-    </div>
+          <Toaster toasts={toasts} onRemove={removeToast} />
+          <Footer
+            hasError={Object.values(errors).length > 0}
+            libraryMode={libraryMode}
+            jsonMode={jsonMode}
+            visualPaletteMode={visualPaletteMode}
+            delimiter={delimiter}
+            setLibraryMode={setLibraryMode}
+            setJsonMode={setJsonMode}
+            setVisualPaletteMode={setVisualPaletteMode}
+            setDelimiter={setDelimiter}
+            onSavePalettes={onGeneratePalettes}
+          />
+        </div>
+    </PostHogProvider>
   )
 }

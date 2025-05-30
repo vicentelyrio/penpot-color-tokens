@@ -9,7 +9,6 @@ afterEach(() => {
   cleanup()
 })
 
-// Mock these packages to avoid resolution errors
 vi.mock('@penpot/plugin-styles', () => ({
   default: {}
 }))

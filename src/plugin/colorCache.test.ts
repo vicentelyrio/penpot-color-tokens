@@ -4,7 +4,6 @@ import { PenpotLibrary } from './libraryService'
 
 describe('colorCache', () => {
   beforeEach(() => {
-    // Reset module state between tests
     vi.resetModules()
   })
 
@@ -66,4 +65,4 @@ describe('colorCache', () => {
       expect(colorExists(emptyLibrary, 'purple')).toBe(true)
     })
   })
-}) 
+})

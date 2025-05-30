@@ -4,7 +4,6 @@ import { Colors, Color } from './colors'
 import '@testing-library/jest-dom'
 import { h } from 'preact'
 
-// Mock useEyeDropper
 vi.mock('use-eye-dropper', () => ({
   default: () => ({
     open: vi.fn(),
@@ -12,12 +11,10 @@ vi.mock('use-eye-dropper', () => ({
   })
 }))
 
-// Mock usehooks-ts
 vi.mock('usehooks-ts', () => ({
   useOnClickOutside: vi.fn()
 }))
 
-// Mock react-colorful
 vi.mock('react-colorful', () => ({
   HexColorPicker: ({ onChange }) => h('div', {
     'data-testid': 'color-picker',
@@ -41,6 +38,10 @@ describe('Colors Component', () => {
 
   const mockSetPalette = vi.fn()
   const mockRemovePalette = vi.fn()
+  const mockErrors = {
+    name: [],
+    color: []
+  }
 
   beforeEach(() => {
     mockSetPalette.mockClear()
@@ -50,37 +51,39 @@ describe('Colors Component', () => {
   describe('Colors component', () => {
     it('should render multiple Color components', () => {
       render(
-        <Colors
-          palettes={mockPalettes}
-          onSetPalette={mockSetPalette}
-          onRemovePalette={mockRemovePalette}
-          errors={[]}
-          colorType="light"
-        />
+        h(Colors, {
+          palettes: mockPalettes,
+          onSetPalette: mockSetPalette,
+          onRemovePalette: mockRemovePalette,
+          errors: mockErrors,
+          colorType: "light"
+        })
       )
 
-      expect(screen.getByText('#ff0000')).toBeInTheDocument()
-      expect(screen.getByText('#0000ff')).toBeInTheDocument()
+      const colorInputs = screen.getAllByPlaceholderText('Palette color')
+      const nameInputs = screen.getAllByPlaceholderText('Palette name')
 
-      const inputs = screen.getAllByRole('textbox')
-      expect(inputs.length).toBe(2)
-      expect(inputs[0]).toHaveValue('red')
-      expect(inputs[1]).toHaveValue('blue')
+      expect(colorInputs).toHaveLength(2)
+      expect(nameInputs).toHaveLength(2)
+      expect(colorInputs[0]).toHaveValue('#ff0000')
+      expect(colorInputs[1]).toHaveValue('#0000ff')
+      expect(nameInputs[0]).toHaveValue('red')
+      expect(nameInputs[1]).toHaveValue('blue')
     })
   })
 
   describe('Color component', () => {
     it('should call onSetPalette when color input changes', () => {
       render(
-        <Color
-          palette={mockPalettes[0]}
-          onSetPalette={mockSetPalette}
-          onRemovePalette={mockRemovePalette}
-          index={0}
-          error={false}
-          colorType="light"
-          multipleRows={false}
-        />
+        h(Color, {
+          palette: mockPalettes[0],
+          onSetPalette: mockSetPalette,
+          onRemovePalette: mockRemovePalette,
+          index: 0,
+          errors: mockErrors,
+          colorType: "light",
+          multipleRows: false
+        })
       )
 
       const colorPicker = screen.getByTestId('color-picker')
@@ -91,18 +94,18 @@ describe('Colors Component', () => {
 
     it('should call onSetPalette when name input changes', () => {
       render(
-        <Color
-          palette={mockPalettes[0]}
-          onSetPalette={mockSetPalette}
-          onRemovePalette={mockRemovePalette}
-          index={0}
-          error={false}
-          colorType="light"
-          multipleRows={false}
-        />
+        h(Color, {
+          palette: mockPalettes[0],
+          onSetPalette: mockSetPalette,
+          onRemovePalette: mockRemovePalette,
+          index: 0,
+          errors: mockErrors,
+          colorType: "light",
+          multipleRows: false
+        })
       )
 
-      const nameInput = screen.getByDisplayValue('red')
+      const nameInput = screen.getByPlaceholderText('Palette name')
       fireEvent.change(nameInput, { target: { value: 'crimson' } })
 
       expect(mockSetPalette).toHaveBeenCalledWith('#ff0000', 'crimson', 0)
@@ -110,15 +113,15 @@ describe('Colors Component', () => {
 
     it('should not display a remove button', () => {
       render(
-        <Color
-          palette={mockPalettes[0]}
-          onSetPalette={mockSetPalette}
-          onRemovePalette={mockRemovePalette}
-          index={0}
-          error={false}
-          colorType="light"
-          multipleRows={false}
-        />
+        h(Color, {
+          palette: mockPalettes[0],
+          onSetPalette: mockSetPalette,
+          onRemovePalette: mockRemovePalette,
+          index: 0,
+          errors: mockErrors,
+          colorType: "light",
+          multipleRows: false
+        })
       )
 
       const removeButton = screen.queryByRole('button')
@@ -127,15 +130,15 @@ describe('Colors Component', () => {
 
     it('should display a remove button for palettes after the first', () => {
       render(
-        <Color
-          palette={mockPalettes[1]}
-          onSetPalette={mockSetPalette}
-          onRemovePalette={mockRemovePalette}
-          index={1}
-          error={false}
-          colorType="light"
-          multipleRows={true}
-        />
+        h(Color, {
+          palette: mockPalettes[1],
+          onSetPalette: mockSetPalette,
+          onRemovePalette: mockRemovePalette,
+          index: 1,
+          errors: mockErrors,
+          colorType: "light",
+          multipleRows: true
+        })
       )
 
       const removeButton = screen.getByRole('button')

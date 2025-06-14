@@ -5,11 +5,12 @@ import { buildPalette } from '@utils/buildPalette'
 
 import {
   DEFAULT_PALETTE_COLOR,
+  DEFAULT_PALETTE_NAME,
   DEFAULT_STEPS
 } from '@consts/config'
 
 const defaultPalette = {
-  name: '',
+  name: DEFAULT_PALETTE_NAME,
   color: DEFAULT_PALETTE_COLOR,
   colors: buildPalette({
     color: DEFAULT_PALETTE_COLOR,

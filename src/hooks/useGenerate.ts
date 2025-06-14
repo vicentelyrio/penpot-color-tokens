@@ -4,6 +4,8 @@ import { parseColors } from '@utils/parseColors'
 import { downloadJsonFile } from '@utils/downloadJson'
 
 import { MESSAGES } from '@consts/messages'
+import { ToastProps } from '@components/toaster/toaster'
+const TOAST_DURATION = 5000
 
 export type UseGenerateProps = {
   palettes: Palette[]
@@ -25,11 +27,7 @@ export function useGenerate({
   visualPaletteMode
 }: UseGenerateProps) {
   const [errors, setErrors] = useState<Record<string, number[]>>({})
-  const [isGenerating, setIsGenerating] = useState(false)
-  const [isExporting, setIsExporting] = useState(false)
-  const [isCreating, setIsCreating] = useState(false)
-  const [generationResult, setGenerationResult] = useState<null | GenerationResult>(null)
-  const [exportResult, setExportResult] = useState<null | ExportResult>(null)
+  const [status, setStatus] = useState<ToastProps[]>([])
 
   const onMessageReturn = useCallback(({ data }: MessageEvent) => {
     if (data.type === MESSAGES.COLOR_LIBRARY_GENERATED) {
@@ -44,25 +42,33 @@ export function useGenerate({
         Object.assign(stats, { created, skipped, failed })
       }
 
-      setIsGenerating(false)
-
-      setGenerationResult({
-        success,
-        message,
-        stats,
-        results
+      setStatus((status) => {
+        return [
+          ...status,
+          {
+            id: MESSAGES.GENERATE_COLOR_LIBRARY,
+            message,
+            type: (!success || stats.failed) ? 'error' : (stats.skipped ? 'warning' : 'success'),
+            duration: TOAST_DURATION,
+            stats
+          }
+        ]
       })
     }
 
     if (data.type === MESSAGES.JSON_GENERATED) {
-      setIsExporting(false)
-
       const { success, message, jsonData } = data
 
-      setExportResult({
-        success,
-        message,
-        result: jsonData
+      setStatus((status) => {
+        return [
+          ...status,
+          {
+            id: MESSAGES.GENERATE_JSON,
+            message,
+            type: success ? 'success' : 'error',
+            duration: TOAST_DURATION,
+          }
+        ]
       })
 
       if (success && jsonData) {
@@ -71,25 +77,21 @@ export function useGenerate({
     }
 
     if (data.type === MESSAGES.COMPONENTS_GENERATED) {
-      setIsCreating(false)
-
       const { success, message } = data
 
-      setGenerationResult({
-        success,
-        message,
-        stats: undefined,
-        results: []
+      setStatus((status) => {
+        return [
+          ...status,
+          {
+            id: MESSAGES.GENERATE_COMPONENTS,
+            message,
+            type: success ? 'success' : 'error',
+            duration: TOAST_DURATION,
+          }
+        ]
       })
     }
-  }, [
-    setIsGenerating,
-    setGenerationResult,
-    setExportResult,
-    setGenerationResult,
-    setIsExporting,
-    setIsCreating
-  ])
+  }, [])
 
   useEffect(() => {
     window.addEventListener('message', onMessageReturn)
@@ -113,10 +115,20 @@ export function useGenerate({
 
   function onGeneratePalettes() {
     const tokenData = parseColors(palettes, tints, shades, delimiter)
+    setStatus([])
 
     if (libraryMode) {
-      setIsGenerating(true)
-      setGenerationResult(null)
+      setStatus((status) => {
+        return [
+          ...status,
+          {
+            id: MESSAGES.GENERATE_COLOR_LIBRARY,
+            message: 'Creating Color Library',
+            type: 'loading',
+            duration: TOAST_DURATION,
+          }
+        ]
+      })
 
       parent.postMessage({
         type: MESSAGES.GENERATE_COLOR_LIBRARY,
@@ -125,8 +137,17 @@ export function useGenerate({
     }
 
     if (jsonMode) {
-      setIsExporting(true)
-      setExportResult(null)
+      setStatus((status) => {
+        return [
+          ...status,
+          {
+            id: MESSAGES.GENERATE_JSON,
+            message: 'Creating JSON Tokens',
+            type: 'loading',
+            duration: TOAST_DURATION,
+          }
+        ]
+      })
 
       parent.postMessage({
         type: MESSAGES.GENERATE_JSON,
@@ -135,8 +156,17 @@ export function useGenerate({
     }
 
     if (visualPaletteMode) {
-      setIsCreating(true)
-      setGenerationResult(null)
+      setStatus((status) => {
+        return [
+          ...status,
+          {
+            id: MESSAGES.GENERATE_COMPONENTS,
+            message: 'Creating Color Palettes',
+            type: 'loading',
+            duration: TOAST_DURATION,
+          }
+        ]
+      })
 
       parent.postMessage({
         type: MESSAGES.GENERATE_COMPONENTS,
@@ -146,12 +176,8 @@ export function useGenerate({
   }
 
   return {
-    isGenerating,
-    isExporting,
-    isCreating,
     errors,
-    generationResult,
-    exportResult,
+    status,
     onGeneratePalettes,
   }
 }

@@ -4,7 +4,7 @@ import { clsx } from '@utils/clsx'
 import { CloseIcon } from '@components/icons/close'
 import classes from './toaster.module.css'
 
-export type ToastType = 'success' | 'error' | 'warning' | 'info'
+export type ToastType = 'success' | 'error' | 'warning' | 'info' | 'loading'
 
 export type ToastProps = {
   id: string
@@ -46,6 +46,7 @@ export function Toast({ toast, onRemove }: { toast: ToastProps; onRemove: (id: s
 
   return (
     <div className={clsx([classes.toast, classes[type]])}>
+      {type === 'loading' && <div className={classes.loader} />}
       <div className={classes.toastContent}>
         <p className="body-l">{message}</p>
 

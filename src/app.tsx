@@ -51,11 +51,7 @@ export function App() {
 
   const {
     errors,
-    isGenerating,
-    isExporting,
-    isCreating,
-    generationResult,
-    exportResult,
+    status,
     onGeneratePalettes,
   } = useGenerate({
     palettes,
@@ -70,28 +66,8 @@ export function App() {
   const { toasts, showToast, removeToast } = useToaster()
 
   useEffect(() => {
-    if (!isGenerating && generationResult) {
-      const { success, stats } = generationResult
-      const { failed, skipped } = stats ?? {}
-
-      showToast(
-        generationResult.message,
-        !success || failed ? 'error' : (skipped ? 'warning' : 'success'),
-        5000,
-        stats
-      )
-    }
-  }, [isGenerating, generationResult, showToast])
-
-  useEffect(() => {
-    if (!isExporting && exportResult) {
-      showToast(
-        exportResult.message,
-        exportResult.success ? 'success' : 'error',
-        5000
-      )
-    }
-  }, [isExporting, exportResult, showToast])
+    status.forEach((stat) => showToast(stat))
+  }, [status, showToast])
 
   return (
     <PostHogProvider
@@ -117,10 +93,6 @@ export function App() {
             errors={errors}
             colorType={colorType}
           />
-
-          {isCreating && <p className="body-l">Creating Color Components...</p>}
-          {isGenerating && <p className="body-l">Creating Colors...</p>}
-          {isExporting && <p className="body-l">Exporting JSON...</p>}
 
           <Toaster toasts={toasts} onRemove={removeToast} />
           <Footer

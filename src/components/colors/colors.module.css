@@ -4,6 +4,7 @@
   display: flex;
   flex-flow: column nowrap;
   align-items: stretch;
+  position: relative;
   overflow: auto;
   gap: var(--spacing-8);
 }
@@ -45,6 +46,12 @@
 }
 
 .color {
+  > div {
+    bottom: auto;
+    top: calc(100% + var(--spacing-8));
+    left: -20px;
+  }
+
   &.segment {
     width: var(--spacing-32);
     height: var(--spacing-32);
@@ -62,15 +69,28 @@
     border-radius: 50%;
     width: var(--spacing-28);
     height: var(--spacing-28);
+
+    &:after {
+      border-radius: 50%;
+    }
   }
 
   &.current {
-    box-shadow: var(--accent-primary) 0 0 0 2px;
-    border-radius: var(--spacing-4);
-    z-index: 1;
     position: relative;
+
+    &:after {
+      box-shadow: var(--accent-primary) 0 0 0 2px;
+      border-radius: var(--spacing-4);
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
   }
-  &.circle.current {
+  &.circle.current:after {
     border-radius: 50%;
   }
 }

@@ -69,6 +69,9 @@ export function App() {
     status.forEach((stat) => showToast(stat))
   }, [status, showToast])
 
+  const hasModesSelected = libraryMode || jsonMode || visualPaletteMode
+  const hasError = Object.values(errors).length > 0 || !hasModesSelected
+
   return (
     <PostHogProvider
       apiKey={import.meta.env.VITE_PUBLIC_POSTHOG_KEY}
@@ -96,7 +99,7 @@ export function App() {
 
           <Toaster toasts={toasts} onRemove={removeToast} />
           <Footer
-            hasError={Object.values(errors).length > 0}
+            hasError={hasError}
             libraryMode={libraryMode}
             jsonMode={jsonMode}
             visualPaletteMode={visualPaletteMode}

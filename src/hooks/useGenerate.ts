@@ -49,7 +49,7 @@ export function useGenerate({
             id: MESSAGES.GENERATE_COLOR_LIBRARY,
             message,
             type: (!success || stats.failed) ? 'error' : (stats.skipped ? 'warning' : 'success'),
-            duration: TOAST_DURATION,
+            duration: TOAST_DURATION * 10,
             stats
           }
         ]
@@ -66,7 +66,7 @@ export function useGenerate({
             id: MESSAGES.GENERATE_JSON,
             message,
             type: success ? 'success' : 'error',
-            duration: TOAST_DURATION,
+            duration: TOAST_DURATION * 10,
           }
         ]
       })
@@ -86,7 +86,7 @@ export function useGenerate({
             id: MESSAGES.GENERATE_COMPONENTS,
             message,
             type: success ? 'success' : 'error',
-            duration: TOAST_DURATION,
+            duration: TOAST_DURATION * 10,
           }
         ]
       })

@@ -3,6 +3,8 @@
 :root {
   --spacing-44: calc(var(--spacing-4) * 11);
   --spacing-48: calc(var(--spacing-4) * 12);
+  --spacing-52: calc(var(--spacing-4) * 13);
+  --spacing-56: calc(var(--spacing-4) * 14);
   --box-shadow-1: rgba(0, 0, 0, 0.4) 0px 0px 0px 2px, rgba(0, 0, 0, 0.2) 0px 2px 4px;
   --box-shadow-2: rgba(0, 0, 0, 0.7) 0px 0px 0px 3px, rgba(0, 0, 0, 0.2) 0px 2px 4px;
 

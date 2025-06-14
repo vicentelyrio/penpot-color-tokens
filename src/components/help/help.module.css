@@ -1,4 +1,12 @@
 .help {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+}
+
+.box {
   background: var(--background-primary);
   border-radius: 50%;
   width: var(--spacing-24);
@@ -27,9 +35,10 @@
   position: absolute;
   bottom: calc(100% + var(--spacing-12));
   left: 0;
-  z-index: 10;
+  z-index: 100;
   opacity: 0;
   transition: opacity 0.2s ease-in-out;
+  pointer-events: none;
 }
 
 .tooltip.show {

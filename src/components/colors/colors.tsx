@@ -8,6 +8,7 @@ import { CloseIcon } from '@components/icons/close'
 import { EyedropperIcon } from '@components/icons/eyedropper'
 
 import classes from './colors.module.css'
+import { Help } from '@components/help/help'
 
 export type ColorsProps = {
   palettes: Palette[]
@@ -120,11 +121,12 @@ export function Color({
       />
       <div className={clsx([classes.colorsSegment, classes[colorType]])}>
         {palette.colors.map((colorStep) => (
-          <div
+          <Help
+            hideIcon
             className={clsx([classes.color, classes[colorType], colorStep === palette.color ? classes.current : ''])}
             style={{ background: colorStep }}
-            title={colorStep}
-          />
+            description={colorStep}>
+          </Help>
         ))}
       </div>
       {multipleRows && (

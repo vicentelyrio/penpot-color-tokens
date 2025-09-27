@@ -1,7 +1,11 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { renderHook, act } from '@testing-library/preact'
 import { usePalette } from './usePalette'
-import { DEFAULT_PALETTE_NAME, DEFAULT_PALETTE_COLOR, DEFAULT_STEPS } from '@consts/config'
+import {
+  DEFAULT_PALETTE_NAME,
+  DEFAULT_PALETTE_COLOR,
+  DEFAULT_STEPS
+} from '@consts/config'
 import { buildPalette } from '@utils/buildPalette'
 
 vi.mock('@utils/buildPalette', () => ({
@@ -24,7 +28,7 @@ describe('usePalette', () => {
 
     expect(result.current.palettes).toHaveLength(1)
     expect(result.current.palettes[0]).toEqual({
-      name: '',
+      name: DEFAULT_PALETTE_NAME,
       color: DEFAULT_PALETTE_COLOR,
       colors: [`${DEFAULT_PALETTE_COLOR}-1`, `${DEFAULT_PALETTE_COLOR}-2`]
     })
@@ -39,7 +43,7 @@ describe('usePalette', () => {
 
     expect(result.current.palettes).toHaveLength(2)
     expect(result.current.palettes[1]).toEqual({
-      name: '',
+      name: DEFAULT_PALETTE_NAME,
       color: DEFAULT_PALETTE_COLOR,
       colors: [`${DEFAULT_PALETTE_COLOR}-1`, `${DEFAULT_PALETTE_COLOR}-2`]
     })
@@ -62,7 +66,7 @@ describe('usePalette', () => {
 
     expect(result.current.palettes).toHaveLength(1)
     expect(result.current.palettes[0]).toEqual({
-      name: '',
+      name: DEFAULT_PALETTE_NAME,
       color: DEFAULT_PALETTE_COLOR,
       colors: [`${DEFAULT_PALETTE_COLOR}-1`, `${DEFAULT_PALETTE_COLOR}-2`]
     })

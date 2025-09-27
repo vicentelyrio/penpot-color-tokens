@@ -50,7 +50,7 @@ export function Footer({
             onChange={() => setVisualPaletteMode(!visualPaletteMode)}
           />
           <label for="visualPaletteMode" className="code-font">Add components</label>
-          <Help description="Save as palette component" />
+          <Help description="Create a visual palette with the colors" />
         </div>
         <div className={clsx(['form-group', 'checkbox-container', classes.fieldset])}>
           <input
@@ -61,7 +61,7 @@ export function Footer({
             onChange={() => setJsonMode(!jsonMode)}
           />
           <label for="jsonMode" className="code-font">Export as JSON</label>
-          <Help description="Save as JSON file" />
+          <Help description="Save as Tokens (json format)" />
         </div>
 
         <div className={clsx(['form-group', 'checkbox-container', classes.fieldset])}>
@@ -74,7 +74,7 @@ export function Footer({
             <option value="-">Dash [ - ]</option>
           </select>
           <label className="code-font" for="delimiter">Delimiter</label>
-          <Help description="The delimiter to use in the color names" />
+          <Help description="The delimiter to use in the color names (red-500 or red.500)" />
         </div>
       </div>
       <button

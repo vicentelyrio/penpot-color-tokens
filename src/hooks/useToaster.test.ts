@@ -19,7 +19,7 @@ describe('useToaster', () => {
 
   it('should add a toast with addToast', () => {
     const { result } = renderHook(() => useToaster())
-    const toast = { message: 'Test toast', type: 'info' as ToastType, duration: 5000 }
+    const toast = { id: 'test-id', message: 'Test toast', type: 'info' as ToastType, duration: 5000 }
 
     act(() => {
       result.current.addToast(toast)
@@ -27,15 +27,15 @@ describe('useToaster', () => {
 
     expect(result.current.toasts).toHaveLength(1)
     expect(result.current.toasts[0]).toMatchObject(toast)
-    expect(result.current.toasts[0].id).toMatch(/^toast-\d+-\d+$/)
+    expect(result.current.toasts[0].id).toBe('test-id')
   })
 
   it('should remove a toast with removeToast', () => {
     const { result } = renderHook(() => useToaster())
-    let toastId: string
+    const toastId = 'test-id'
 
     act(() => {
-      toastId = result.current.addToast({ message: 'Test toast', type: 'info', duration: 5000 })
+      result.current.addToast({ id: toastId, message: 'Test toast', type: 'info', duration: 5000 })
     })
 
     expect(result.current.toasts).toHaveLength(1)
@@ -51,11 +51,17 @@ describe('useToaster', () => {
     const { result } = renderHook(() => useToaster())
 
     act(() => {
-      result.current.showToast('Test message')
+      result.current.showToast({
+        id: 'test-toast',
+        message: 'Test message',
+        type: 'info',
+        duration: 5000
+      })
     })
 
     expect(result.current.toasts).toHaveLength(1)
     expect(result.current.toasts[0]).toMatchObject({
+      id: 'test-toast',
       message: 'Test message',
       type: 'info',
       duration: 5000
@@ -67,11 +73,18 @@ describe('useToaster', () => {
     const stats = { created: 5, skipped: 2, failed: 1 }
 
     act(() => {
-      result.current.showToast('Test message', 'success', 3000, stats)
+      result.current.showToast({
+        id: 'test-toast-2',
+        message: 'Test message',
+        type: 'success',
+        duration: 3000,
+        stats
+      })
     })
 
     expect(result.current.toasts).toHaveLength(1)
     expect(result.current.toasts[0]).toMatchObject({
+      id: 'test-toast-2',
       message: 'Test message',
       type: 'success',
       duration: 3000,
@@ -83,8 +96,18 @@ describe('useToaster', () => {
     const { result } = renderHook(() => useToaster())
 
     act(() => {
-      result.current.showToast('First toast')
-      result.current.showToast('Second toast', 'error')
+      result.current.showToast({
+        id: 'toast-1',
+        message: 'First toast',
+        type: 'info',
+        duration: 5000
+      })
+      result.current.showToast({
+        id: 'toast-2', 
+        message: 'Second toast',
+        type: 'error',
+        duration: 5000
+      })
     })
 
     expect(result.current.toasts).toHaveLength(2)

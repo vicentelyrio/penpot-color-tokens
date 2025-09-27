@@ -31,11 +31,9 @@ describe('useGenerate', () => {
   it('should initialize with default values', () => {
     const { result } = renderHook(() => useGenerate(defaultProps))
 
-    expect(result.current.isGenerating).toBe(false)
-    expect(result.current.isExporting).toBe(false)
-    expect(result.current.isCreating).toBe(false)
-    expect(result.current.generationResult).toBe(null)
-    expect(result.current.exportResult).toBe(null)
+    expect(result.current.errors).toEqual({})
+    expect(result.current.status).toEqual([])
+    expect(typeof result.current.onGeneratePalettes).toBe('function')
   })
 
   it('should handle library generation', () => {
@@ -46,7 +44,8 @@ describe('useGenerate', () => {
       result.current.onGeneratePalettes()
     })
 
-    expect(result.current.isGenerating).toBe(true)
+    expect(result.current.status).toHaveLength(3)
+    expect(result.current.status.find(s => s.id === MESSAGES.GENERATE_COLOR_LIBRARY)).toBeDefined()
     expect(parseColors).toHaveBeenCalledWith(defaultProps.palettes, true, true, '-')
     expect(postMessageSpy).toHaveBeenCalledWith({
       type: MESSAGES.GENERATE_COLOR_LIBRARY,
@@ -62,7 +61,8 @@ describe('useGenerate', () => {
       result.current.onGeneratePalettes()
     })
 
-    expect(result.current.isExporting).toBe(true)
+    expect(result.current.status).toHaveLength(3)
+    expect(result.current.status.find(s => s.id === MESSAGES.GENERATE_JSON)).toBeDefined()
     expect(parseColors).toHaveBeenCalledWith(defaultProps.palettes, true, true, '-')
     expect(postMessageSpy).toHaveBeenCalledWith({
       type: MESSAGES.GENERATE_JSON,
@@ -78,7 +78,8 @@ describe('useGenerate', () => {
       result.current.onGeneratePalettes()
     })
 
-    expect(result.current.isCreating).toBe(true)
+    expect(result.current.status).toHaveLength(3)
+    expect(result.current.status.find(s => s.id === MESSAGES.GENERATE_COMPONENTS)).toBeDefined()
     expect(parseColors).toHaveBeenCalledWith(defaultProps.palettes, true, true, '-')
     expect(postMessageSpy).toHaveBeenCalledWith({
       type: MESSAGES.GENERATE_COMPONENTS,
@@ -103,13 +104,11 @@ describe('useGenerate', () => {
       window.dispatchEvent(new MessageEvent('message', { data: message }))
     })
 
-    expect(result.current.isGenerating).toBe(false)
-    expect(result.current.generationResult).toEqual({
-      success: true,
-      message: 'Success',
-      stats: { created: 1, skipped: 1, failed: 1 },
-      results: message.results
-    })
+    const libraryStatus = result.current.status.find(s => s.id === MESSAGES.GENERATE_COLOR_LIBRARY)
+    expect(libraryStatus).toBeDefined()
+    expect(libraryStatus?.message).toBe('Success')
+    expect(libraryStatus?.type).toBe('error')
+    expect(libraryStatus?.stats).toEqual({ created: 1, skipped: 1, failed: 1 })
   })
 
   it('should handle successful JSON generation message', () => {
@@ -126,12 +125,10 @@ describe('useGenerate', () => {
       window.dispatchEvent(new MessageEvent('message', { data: message }))
     })
 
-    expect(result.current.isExporting).toBe(false)
-    expect(result.current.exportResult).toEqual({
-      success: true,
-      message: 'Success',
-      result: jsonData
-    })
+    const jsonStatus = result.current.status.find(s => s.id === MESSAGES.GENERATE_JSON)
+    expect(jsonStatus).toBeDefined()
+    expect(jsonStatus?.message).toBe('Success')
+    expect(jsonStatus?.type).toBe('success')
     expect(downloadJsonFile).toHaveBeenCalledWith(jsonData)
   })
 
@@ -147,13 +144,10 @@ describe('useGenerate', () => {
       window.dispatchEvent(new MessageEvent('message', { data: message }))
     })
 
-    expect(result.current.isCreating).toBe(false)
-    expect(result.current.generationResult).toEqual({
-      success: true,
-      message: 'Success',
-      stats: undefined,
-      results: []
-    })
+    const componentsStatus = result.current.status.find(s => s.id === MESSAGES.GENERATE_COMPONENTS)
+    expect(componentsStatus).toBeDefined()
+    expect(componentsStatus?.message).toBe('Success')
+    expect(componentsStatus?.type).toBe('success')
   })
 
   it('should cleanup message listener on unmount', () => {

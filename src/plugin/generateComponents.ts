@@ -23,25 +23,36 @@ function createColorRectangle(
     elements.push(rectangle)
 
     const textColor = getBrightness(color) > 128 ? '#000000' : '#FFFFFF'
-    const nameText = penpot.createText(name)
 
-    if (nameText) {
-      nameText.name = `${name}-label`
-      nameText.fontSize = '11'
-      nameText.x = x + padding
-      nameText.y = y + padding
-      nameText.fills = [{ fillOpacity: 1, fillColor: textColor }]
-      elements.push(nameText)
+    try {
+      const nameText = penpot.createText(name)
+
+      if (nameText) {
+        nameText.name = `${name}-label`
+        nameText.fontSize = '11'
+        nameText.x = x + padding
+        nameText.y = y + padding
+        nameText.fills = [{ fillOpacity: 1, fillColor: textColor }]
+        elements.push(nameText)
+      }
+    }
+    catch (error) {
+      console.error(error)
     }
 
-    const hexText = penpot.createText(color.toUpperCase())
-    if (hexText) {
-      hexText.name = `${name}-hex`
-      hexText.fontSize = '11'
-      hexText.x = x + padding
-      hexText.y = y + padding + 20
-      hexText.fills = [{ fillOpacity: 1, fillColor: textColor }]
-      elements.push(hexText)
+    try {
+      const hexText = penpot.createText(color.toUpperCase())
+      if (hexText) {
+        hexText.name = `${name}-hex`
+        hexText.fontSize = '11'
+        hexText.x = x + padding
+        hexText.y = y + padding + 20
+        hexText.fills = [{ fillOpacity: 1, fillColor: textColor }]
+        elements.push(hexText)
+      }
+    }
+    catch (error) {
+      console.error(error)
     }
   }
 

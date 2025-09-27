@@ -6,9 +6,9 @@ import { HexColorPicker } from 'react-colorful'
 import { clsx } from '@utils/clsx'
 import { CloseIcon } from '@components/icons/close'
 import { EyedropperIcon } from '@components/icons/eyedropper'
+import { Help } from '@components/help/help'
 
 import classes from './colors.module.css'
-import { Help } from '@components/help/help'
 
 export type ColorsProps = {
   palettes: Palette[]
@@ -105,20 +105,34 @@ export function Color({
           onClick={() => pickColor(palette.name, index)}
         />
       )}
-      <input
-        className={clsx(['input', classes.inputColor, colorError])}
-        type="text"
-        value={palette.color}
-        placeholder="Palette color"
-        onChange={(e) => onSetPalette(e.currentTarget.value, palette.name, index)}
-      />
-      <input
-        className={clsx(['input', classes.inputName, nameError])}
-        type="text"
-        value={palette.name}
-        placeholder="Palette name"
-        onChange={(e) => onSetPalette(palette.color, e.currentTarget.value, index)}
-      />
+      <div className={classes.fieldset}>
+        <input
+          className={clsx(['input', classes.inputColor, colorError])}
+          type="text"
+          value={palette.color}
+          placeholder="Palette color"
+          onChange={(e) => onSetPalette(e.currentTarget.value, palette.name, index)}
+        />
+        {colorError && (
+          <div className={clsx([classes.error])}>
+            <span className="code-font">must be unique</span>
+          </div>
+        )}
+      </div>
+      <div className={classes.fieldset}>
+        <input
+          className={clsx(['input', classes.inputName, nameError])}
+          type="text"
+          value={palette.name}
+          placeholder="Palette name"
+          onChange={(e) => onSetPalette(palette.color, e.currentTarget.value, index)}
+        />
+        {nameError && (
+          <div className={clsx([classes.error])}>
+            <span className="code-font">must be unique</span>
+          </div>
+        )}
+      </div>
       <div className={clsx([classes.colorsSegment, classes[colorType]])}>
         {palette.colors.map((colorStep) => (
           <Help

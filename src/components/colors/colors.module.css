@@ -144,3 +144,22 @@
     fill: var(--accent-primary);
   }
 }
+
+.fieldset {
+  position: relative;
+}
+
+.error {
+  color: var(--error-500);
+  position: absolute;
+  top: 100%;
+  white-space: nowrap;
+  background: var(--background-secondary);
+  border-radius: var(--spacing-12);
+  width: max-content;
+  max-width: 200px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  padding: var(--spacing-12);
+}

@@ -2,18 +2,21 @@
   background: var(--background-secondary);
   border-radius: var(--spacing-12);
   display: flex;
-  flex-flow: row wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--spacing-12);
-  padding: var(--spacing-4);
+  flex-flow: column nowrap;
+  gap: var(--spacing-4);
+  /* Right padding matches the left inset of the rows (4px + 12px) */
+  padding: var(--spacing-4) var(--spacing-16) var(--spacing-4) var(--spacing-4);
 }
 
-.options {
+/* Fixed rows: what is shown in one row never moves the others.
+   min-height keeps the footer from changing height when the set selector appears. */
+.row {
   display: flex;
-  flex-flow: row nowrap;
-  gap: var(--spacing-12);
+  flex-flow: row wrap;
   align-items: center;
+  justify-content: flex-start;
+  gap: var(--spacing-4) var(--spacing-12);
+  min-height: var(--spacing-40);
   padding: 0 var(--spacing-12);
 }
 
@@ -21,17 +24,26 @@
   width: calc(var(--spacing-40) * 3);
 }
 
+/* Label text never breaks; groups may shrink and wrap so nothing is pushed out of view */
 .fieldset {
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: row wrap;
+  flex: 0 1 auto;
+  max-width: 100%;
+  align-items: center;
   gap: var(--spacing-4);
   margin-right: var(--spacing-8);
+}
+
+.fieldset label {
+  white-space: nowrap;
 }
 
 .setInput {
   width: calc(var(--spacing-40) * 4);
 }
 
-.hint {
-  color: var(--foreground-secondary);
+.generate {
+  flex: 0 0 auto;
+  margin-left: auto;
 }

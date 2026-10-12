@@ -46,7 +46,7 @@ export function Footer({
 }: FooterProps) {
   return (
     <div className={classes.footer}>
-      <div className={classes.options}>
+      <div className={classes.row}>
         <div className={clsx(['form-group', 'checkbox-container', classes.fieldset])}>
           <input
             className="checkbox-input"
@@ -80,6 +80,9 @@ export function Footer({
           <label for="jsonMode" className="code-font">Export as JSON</label>
           <Help description="Save as Tokens (json format)" />
         </div>
+      </div>
+
+      <div className={classes.row}>
         <div className={clsx(['form-group', 'checkbox-container', classes.fieldset])}>
           <input
             className="checkbox-input"
@@ -122,7 +125,9 @@ export function Footer({
             )}
           </div>
         )}
+      </div>
 
+      <div className={classes.row}>
         <div className={clsx(['form-group', 'checkbox-container', classes.fieldset])}>
           <select
             className={clsx(['input', classes.delimiterInput])}
@@ -135,14 +140,14 @@ export function Footer({
           <label className="code-font" for="delimiter">Delimiter</label>
           <Help description="The delimiter to use in the color names (red-500 or red.500)" />
         </div>
+        <button
+          className={classes.generate}
+          data-appearance="primary"
+          disabled={hasError}
+          onClick={onSavePalettes}>
+          Generate
+        </button>
       </div>
-      <button
-        data-appearance="primary"
-        disabled={hasError}
-        onClick={onSavePalettes}>
-        Generate
-      </button>
     </div>
   )
 }
-

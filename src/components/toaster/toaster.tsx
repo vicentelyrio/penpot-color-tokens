@@ -13,6 +13,7 @@ export type ToastProps = {
   duration?: number
   stats?: {
     created: number
+    updated?: number
     skipped: number
     failed: number
   }
@@ -53,7 +54,7 @@ export function Toast({ toast, onRemove }: { toast: ToastProps; onRemove: (id: s
         {stats && (
           <div className={classes.toastStats}>
             <p className="body-m">
-              created: {String(stats.created ?? 0)} | skipped: {String(stats.skipped ?? 0)} | failed: {String(stats.failed ?? 0)}
+              created: {String(stats.created ?? 0)}{stats.updated !== undefined && ` | updated: ${stats.updated}`} | skipped: {String(stats.skipped ?? 0)} | failed: {String(stats.failed ?? 0)}
             </p>
           </div>
         )}

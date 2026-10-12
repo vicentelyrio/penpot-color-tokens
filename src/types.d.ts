@@ -13,6 +13,7 @@ type ResultItem = {
   name: string
   success: boolean
   skipped?: boolean
+  updated?: boolean
   message?: string
   error?: string
   colorId?: string
@@ -24,6 +25,7 @@ type GenerationResult = {
   results?: ResultItem[]
   stats?: {
     created: number
+    updated?: number
     skipped: number
     failed: number
   }
@@ -42,6 +44,19 @@ type Message = {
   colors?: Array<{ name: string; value: string; path?: string }>
   tokens?: Record<string, { $type: string; $value: string }>
   content?: any
+  setId?: string | null
+  newSetName?: string
+}
+
+type TokenSetInfo = {
+  id: string
+  name: string
+  active: boolean
+}
+
+type TokenSetsResult = {
+  available: boolean
+  sets: TokenSetInfo[]
 }
 
 type Delimiter = '.' | '-'

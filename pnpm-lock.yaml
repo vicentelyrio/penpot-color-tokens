@@ -11,9 +11,6 @@ importers:
       '@penpot/plugin-styles':
         specifier: ^1.2.0
         version: 1.2.0
-      '@penpot/plugin-types':
-        specifier: ^1.2.0
-        version: 1.2.0
       '@skinnypete/color':
         specifier: ^1.0.3
         version: 1.0.3
@@ -36,6 +33,9 @@ importers:
         specifier: ^3.1.1
         version: 3.1.1(react@16.14.0)
     devDependencies:
+      '@penpot/plugin-types':
+        specifier: ^1.5.0
+        version: 1.5.0
       '@preact/preset-vite':
         specifier: ^2.10.1
         version: 2.10.1(@babel/core@7.26.10)(magic-string@0.30.17)(preact@10.26.5)(vite@6.3.2(@types/node@22.14.1))
@@ -521,8 +521,8 @@ packages:
   '@penpot/plugin-styles@1.2.0':
     resolution: {integrity: sha512-dEb69d107745Un50nER1RA+n0cX8iG0m5k0/gn9LgHUIahvmbCzDau/8yiOc4heYa5L+Mww1JaOav1G7xyINkg==}
 
-  '@penpot/plugin-types@1.2.0':
-    resolution: {integrity: sha512-mf4ybigxLndlkBK4vTMjeiN245fcrk61LLmLNelzbK7KIQSTac8WLhiSq/KHcq1dTMnbuL4K7oKlPbbmhjeYAA==}
+  '@penpot/plugin-types@1.5.0':
+    resolution: {integrity: sha512-hFk4Rx66rLaSUWoN6bhxXkDI2ymwKg9xokdslvZvXM5MSmEmfhsJKUMwtuzgYWljbbfaQhK+DjK8g8yVbbavtA==}
 
   '@preact/preset-vite@2.10.1':
     resolution: {integrity: sha512-59lyGBXNfZIr5OOuBUB4/IB8AqF/ULbvYnyItgK/2BJnsGJqaeaJobRVtMp1129obHQuj8oZ/dVxB9inmH8Xig==}
@@ -1711,6 +1711,7 @@ packages:
   whatwg-encoding@3.1.1:
     resolution: {integrity: sha512-6qN4hJdMwfYBtE3YBTTHhoeuUrDBPZmbQaxWAqSALV/MeEnR5z1xd8UKud2RAkFoPkmB+hli1TZSnyi84xz1vQ==}
     engines: {node: '>=18'}
+    deprecated: Use @exodus/bytes instead for a more spec-conformant and faster implementation
 
   whatwg-mimetype@3.0.0:
     resolution: {integrity: sha512-nt+N2dzIutVRxARx1nghPKGv1xHikU7HKdfafKkLNLindmPU/ch3U31NOCGGA/dmPcmb1VlofO0vnKAcsm0o/Q==}
@@ -2117,7 +2118,7 @@ snapshots:
 
   '@penpot/plugin-styles@1.2.0': {}
 
-  '@penpot/plugin-types@1.2.0': {}
+  '@penpot/plugin-types@1.5.0': {}
 
   '@preact/preset-vite@2.10.1(@babel/core@7.26.10)(magic-string@0.30.17)(preact@10.26.5)(vite@6.3.2(@types/node@22.14.1))':
     dependencies:

@@ -1,17 +1,26 @@
 import { clsx } from '@utils/clsx'
 import classes from './footer.module.css'
 import { Help } from '@components/help/help'
+import { NEW_TOKEN_SET } from '@consts/config'
 
 export type FooterProps = {
   libraryMode: boolean
   jsonMode: boolean
   visualPaletteMode: boolean
+  tokensMode?: boolean
+  tokensAvailable?: boolean
+  tokenSets?: TokenSetInfo[]
+  targetSet?: string
+  newSetName?: string
   hasError: boolean
   delimiter: Delimiter
   setLibraryMode: (mode: boolean) => void
   setJsonMode: (mode: boolean) => void
   setVisualPaletteMode: (mode: boolean) => void
   setDelimiter: (delimiter: Delimiter) => void
+  setTokensMode?: (mode: boolean) => void
+  setTargetSet?: (id: string) => void
+  setNewSetName?: (name: string) => void
   onSavePalettes: () => void
 }
 
@@ -21,6 +30,14 @@ export function Footer({
   jsonMode,
   hasError,
   delimiter,
+  tokensMode = false,
+  tokensAvailable = false,
+  tokenSets = [],
+  targetSet = '',
+  newSetName = '',
+  setTokensMode,
+  setTargetSet,
+  setNewSetName,
   setLibraryMode,
   setVisualPaletteMode,
   setDelimiter,
@@ -63,6 +80,48 @@ export function Footer({
           <label for="jsonMode" className="code-font">Export as JSON</label>
           <Help description="Save as Tokens (json format)" />
         </div>
+        <div className={clsx(['form-group', 'checkbox-container', classes.fieldset])}>
+          <input
+            className="checkbox-input"
+            type="checkbox"
+            id="tokensMode"
+            checked={tokensMode}
+            disabled={!tokensAvailable}
+            onChange={() => setTokensMode?.(!tokensMode)}
+          />
+          <label for="tokensMode" className="code-font">Add to tokens</label>
+          <Help description={tokensAvailable
+            ? 'Add or update color tokens in an existing token set. Other tokens are left untouched'
+            : 'Not available: requires Penpot 2.14 or newer'} />
+        </div>
+        {tokensMode && (
+          <div className={clsx(['form-group', 'checkbox-container', classes.fieldset])}>
+            <select
+              className={clsx(['input', classes.setInput])}
+              id="targetSet"
+              value={targetSet}
+              onChange={(e) => setTargetSet?.(e.currentTarget.value)}>
+              <option value="" disabled>Select a set…</option>
+              {tokenSets.map((set) => (
+                <option key={set.id} value={set.id}>{set.name}</option>
+              ))}
+              <option value={NEW_TOKEN_SET}>New set…</option>
+            </select>
+            <label className="code-font" for="targetSet">Token set</label>
+            {targetSet === NEW_TOKEN_SET && (
+              <>
+                <input
+                  className={clsx(['input', classes.setInput])}
+                  type="text"
+                  id="newSetName"
+                  value={newSetName}
+                  onInput={(e) => setNewSetName?.(e.currentTarget.value)}
+                />
+                <label className="code-font" for="newSetName">Set name</label>
+              </>
+            )}
+          </div>
+        )}
 
         <div className={clsx(['form-group', 'checkbox-container', classes.fieldset])}>
           <select

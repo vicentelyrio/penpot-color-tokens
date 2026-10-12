@@ -40,4 +40,19 @@ describe('useGenerateOptions', () => {
 
     expect(result.current.visualPaletteMode).toBe(false)
   })
-}) 
+
+  it('should default tokensMode to false and allow selecting a target set', () => {
+    const { result } = renderHook(() => useGenerateOptions())
+
+    expect(result.current.tokensMode).toBe(false)
+    expect(result.current.targetSet).toBe('')
+
+    act(() => {
+      result.current.setTokensMode(true)
+      result.current.setTargetSet('set-1')
+    })
+
+    expect(result.current.tokensMode).toBe(true)
+    expect(result.current.targetSet).toBe('set-1')
+  })
+})

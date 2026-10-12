@@ -74,4 +74,35 @@ describe('Footer Component', () => {
     expect(screen.getByLabelText('Add components')).toBeChecked()
     expect(screen.getByLabelText('Export as JSON')).toBeChecked()
   })
+
+  it('should disable the tokens checkbox when the tokens API is unavailable', () => {
+    render(<Footer {...mockProps} tokensAvailable={false} />)
+
+    expect(screen.getByLabelText('Add to tokens')).toBeDisabled()
+  })
+
+  it('should call setTokensMode when the tokens checkbox changes', () => {
+    const setTokensMode = vi.fn()
+    render(<Footer {...mockProps} tokensAvailable setTokensMode={setTokensMode} />)
+
+    fireEvent.change(screen.getByLabelText('Add to tokens'), { target: { checked: true } })
+
+    expect(setTokensMode).toHaveBeenCalledWith(true)
+  })
+
+  it('should list token sets and reveal the name input for a new set', () => {
+    render(
+      <Footer
+        {...mockProps}
+        tokensAvailable
+        tokensMode
+        tokenSets={[{ id: 'set-1', name: 'color', active: true }]}
+        targetSet="__new__"
+        newSetName="Brand"
+      />
+    )
+
+    expect(screen.getByRole('option', { name: 'color' })).toBeInTheDocument()
+    expect(screen.getByLabelText('Set name')).toHaveValue('Brand')
+  })
 })

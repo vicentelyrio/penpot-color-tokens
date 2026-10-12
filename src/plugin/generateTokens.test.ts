@@ -130,6 +130,61 @@ describe('generateTokens', () => {
     expect(otherSet.addToken).toHaveBeenCalled()
   })
 
+  describe('refreshing the set', () => {
+    function trackActive(set: ReturnType<typeof makeSet>, initial: boolean) {
+      const changes: boolean[] = []
+      let value = initial
+      Object.defineProperty(set, 'active', {
+        get: () => value,
+        set: (next: boolean) => { value = next; changes.push(next) }
+      })
+      return changes
+    }
+
+    it('switches an active set off and on again after changes', async () => {
+      const changes = trackActive(templateSet, true)
+
+      const result = await generateTokens(colors, 'set-1')
+
+      expect(changes).toEqual([false, true])
+      expect(result.message).toContain('re-activated')
+    })
+
+    it('leaves an inactive set inactive', async () => {
+      const changes = trackActive(templateSet, false)
+
+      await generateTokens(colors, 'set-1')
+
+      expect(changes).toEqual([])
+    })
+
+    it('does not toggle when nothing changed', async () => {
+      const changes = trackActive(templateSet, true)
+      templateSet.tokens[0].value = '#112233'
+      templateSet.tokens.push({ id: 't4', name: 'primary.shade.100', type: 'color', value: '#445566' })
+
+      await generateTokens(colors, 'set-1')
+
+      expect(changes).toEqual([])
+    })
+
+    it('keeps the run successful if the refresh throws', async () => {
+      let value = true
+      Object.defineProperty(templateSet, 'active', {
+        get: () => value,
+        set: (next: boolean) => {
+          if (next === false) throw new Error('nope')
+          value = next
+        }
+      })
+
+      const result = await generateTokens(colors, 'set-1')
+
+      expect(result.success).toBe(true)
+      expect(value).toBe(true)
+    })
+  })
+
   it('fails when the selected set no longer exists', async () => {
     const result = await generateTokens(colors, 'missing')
 

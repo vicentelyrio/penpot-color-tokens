@@ -30,6 +30,27 @@ function resolveSet(setId: string | null | undefined, newSetName?: string): Toke
 
 const normalize = (value: unknown) => String(value).trim().toLowerCase()
 
+const REFRESH_PAUSE_MS = 50
+
+// The tokens API has no refresh call. Penpot re-resolves tokens when a set is
+// (de)activated, so briefly switch an active set off and on again.
+async function reactivateSet(set: TokenSet): Promise<boolean> {
+  if (!set.active) return false
+
+  set.active = false
+  try {
+    if (typeof setTimeout === 'function') {
+      await new Promise((resolve) => setTimeout(resolve, REFRESH_PAUSE_MS))
+    }
+  }
+  finally {
+    // Never leave the user's set switched off
+    set.active = true
+  }
+
+  return true
+}
+
 export async function generateTokens(
   tokenColors: Record<string, ColorToken>,
   setId?: string | null,
@@ -77,9 +98,22 @@ export async function generateTokens(
       }
     })
 
+    const hasChanges = results.some(({ success, skipped }) => success && !skipped)
+    let refreshed = false
+
+    if (hasChanges) {
+      try {
+        refreshed = await reactivateSet(set)
+      }
+      catch {
+        // Values are written; a failed refresh must not turn the run into an error
+      }
+    }
+
     return {
       success: true,
-      message: `Processed ${colors.length} tokens in set "${set.name}".`,
+      message: `Processed ${colors.length} tokens in set "${set.name}".` +
+        (refreshed ? ' Set re-activated to apply the new values.' : ''),
       results
     }
   }

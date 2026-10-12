@@ -5,6 +5,8 @@ import {
   handleColorLibraryMessage,
   handleGenerateComponentsMessage,
   handleGenerateJsonMessage,
+  handleGenerateTokensMessage,
+  handleGetTokenSetsMessage,
 } from '@plugin/messages'
 
 penpot.ui.open(LIBRARY_NAME, `./index.html?theme=${penpot.theme}`, {
@@ -31,6 +33,14 @@ penpot.ui.onMessage((message: Message) => {
 
     case MESSAGES.GENERATE_COMPONENTS:
       handleGenerateComponentsMessage(message)
+      break
+
+    case MESSAGES.GET_TOKEN_SETS:
+      handleGetTokenSetsMessage()
+      break
+
+    case MESSAGES.GENERATE_TOKENS:
+      handleGenerateTokensMessage(message)
       break
   }
 })

@@ -9,4 +9,10 @@ export const MESSAGES = {
 
   GENERATE_COMPONENTS: 'generateComponents',
   COMPONENTS_GENERATED: 'componentsGenerated',
+
+  GET_TOKEN_SETS: 'getTokenSets',
+  TOKEN_SETS: 'tokenSets',
+
+  GENERATE_TOKENS: 'generateTokens',
+  TOKENS_GENERATED: 'tokensGenerated',
 }

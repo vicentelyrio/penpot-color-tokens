@@ -4,6 +4,7 @@ import { parseColors } from '@utils/parseColors'
 import { downloadJsonFile } from '@utils/downloadJson'
 
 import { MESSAGES } from '@consts/messages'
+import { NEW_TOKEN_SET } from '@consts/config'
 import { ToastProps } from '@components/toaster/toaster'
 const TOAST_DURATION = 5000
 
@@ -15,6 +16,9 @@ export type UseGenerateProps = {
   jsonMode: boolean
   libraryMode: boolean
   visualPaletteMode: boolean
+  tokensMode?: boolean
+  targetSet?: string
+  newSetName?: string
 }
 
 export function useGenerate({
@@ -24,12 +28,50 @@ export function useGenerate({
   jsonMode,
   delimiter,
   libraryMode,
-  visualPaletteMode
+  visualPaletteMode,
+  tokensMode = false,
+  targetSet = '',
+  newSetName = ''
 }: UseGenerateProps) {
   const [errors, setErrors] = useState<Record<string, number[]>>({})
   const [status, setStatus] = useState<ToastProps[]>([])
+  const [tokenSets, setTokenSets] = useState<TokenSetsResult>({ available: false, sets: [] })
+
+  const requestTokenSets = useCallback(() => {
+    parent.postMessage({ type: MESSAGES.GET_TOKEN_SETS }, '*')
+  }, [])
 
   const onMessageReturn = useCallback(({ data }: MessageEvent) => {
+    if (data.type === MESSAGES.TOKEN_SETS) {
+      setTokenSets({ available: !!data.available, sets: data.sets ?? [] })
+    }
+
+    if (data.type === MESSAGES.TOKENS_GENERATED) {
+      const { results, success, message } = data
+      const stats = { created: 0, updated: 0, skipped: 0, failed: 0 }
+
+      if (results && Array.isArray(results)) {
+        stats.created = results.filter((r: ResultItem) => r.success && !r.skipped && !r.updated).length
+        stats.updated = results.filter((r: ResultItem) => r.success && r.updated).length
+        stats.skipped = results.filter((r: ResultItem) => r.success && r.skipped).length
+        stats.failed = results.filter((r: ResultItem) => !r.success).length
+      }
+
+      setStatus((status) => [
+        ...status,
+        {
+          id: MESSAGES.GENERATE_TOKENS,
+          message,
+          type: (!success || stats.failed) ? 'error' : 'success',
+          duration: TOAST_DURATION * 10,
+          stats
+        }
+      ])
+
+      // A new set may have been created
+      requestTokenSets()
+    }
+
     if (data.type === MESSAGES.COLOR_LIBRARY_GENERATED) {
       const { results, success, message } = data
       const stats = { created: 0, skipped: 0, failed: 0 }
@@ -91,10 +133,11 @@ export function useGenerate({
         ]
       })
     }
-  }, [])
+  }, [requestTokenSets])
 
   useEffect(() => {
     window.addEventListener('message', onMessageReturn)
+    requestTokenSets()
 
     return () => {
       window.removeEventListener('message', onMessageReturn)
@@ -173,11 +216,35 @@ export function useGenerate({
         tokens: tokenData
       }, '*')
     }
+
+    if (tokensMode) {
+      setStatus((status) => {
+        return [
+          ...status,
+          {
+            id: MESSAGES.GENERATE_TOKENS,
+            message: 'Adding to Tokens',
+            type: 'loading',
+            duration: TOAST_DURATION,
+          }
+        ]
+      })
+
+      const isNewSet = targetSet === NEW_TOKEN_SET
+
+      parent.postMessage({
+        type: MESSAGES.GENERATE_TOKENS,
+        tokens: tokenData,
+        setId: isNewSet ? null : targetSet,
+        newSetName: isNewSet ? newSetName : undefined
+      }, '*')
+    }
   }
 
   return {
     errors,
     status,
+    tokenSets,
     onGeneratePalettes,
   }
 }

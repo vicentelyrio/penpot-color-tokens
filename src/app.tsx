@@ -13,6 +13,8 @@ import { usePalette } from '@hooks/usePalette'
 import { useGenerateOptions } from '@hooks/useGenerateOptions'
 import { useGenerate } from '@hooks/useGenerate'
 
+import { NEW_TOKEN_SET } from '@consts/config'
+
 import classes from './app.module.css'
 
 const options = {
@@ -42,16 +44,23 @@ export function App() {
     libraryMode,
     jsonMode,
     visualPaletteMode,
+    tokensMode,
+    targetSet,
+    newSetName,
     delimiter,
     setLibraryMode,
     setJsonMode,
     setVisualPaletteMode,
+    setTokensMode,
+    setTargetSet,
+    setNewSetName,
     setDelimiter,
   } = useGenerateOptions()
 
   const {
     errors,
     status,
+    tokenSets,
     onGeneratePalettes,
   } = useGenerate({
     palettes,
@@ -60,7 +69,10 @@ export function App() {
     jsonMode,
     libraryMode,
     delimiter,
-    visualPaletteMode
+    visualPaletteMode,
+    tokensMode,
+    targetSet,
+    newSetName
   })
 
   const { toasts, showToast, removeToast } = useToaster()
@@ -69,8 +81,11 @@ export function App() {
     status.forEach((stat) => showToast(stat))
   }, [status, showToast])
 
-  const hasModesSelected = libraryMode || jsonMode || visualPaletteMode
-  const hasError = Object.values(errors).length > 0 || !hasModesSelected
+  const hasModesSelected = libraryMode || jsonMode || visualPaletteMode || tokensMode
+  const hasTokenTargetError = tokensMode && (
+    !targetSet || (targetSet === NEW_TOKEN_SET && !newSetName.trim())
+  )
+  const hasError = Object.values(errors).length > 0 || !hasModesSelected || hasTokenTargetError
 
   return (
     <PostHogProvider
@@ -103,11 +118,19 @@ export function App() {
             libraryMode={libraryMode}
             jsonMode={jsonMode}
             visualPaletteMode={visualPaletteMode}
+            tokensMode={tokensMode}
+            tokensAvailable={tokenSets.available}
+            tokenSets={tokenSets.sets}
+            targetSet={targetSet}
+            newSetName={newSetName}
             delimiter={delimiter}
             setLibraryMode={setLibraryMode}
             setJsonMode={setJsonMode}
             setVisualPaletteMode={setVisualPaletteMode}
             setDelimiter={setDelimiter}
+            setTokensMode={setTokensMode}
+            setTargetSet={setTargetSet}
+            setNewSetName={setNewSetName}
             onSavePalettes={onGeneratePalettes}
           />
         </div>
